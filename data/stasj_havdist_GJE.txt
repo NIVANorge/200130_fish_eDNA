@@ -1,0 +1,10 @@
+stasjon	dist_hav
+4	10
+3	13.8
+2	19.8
+1	24.1
+5	28.1
+6	32
+TV	NA
+LS	NA
+BT	NA

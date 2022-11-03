@@ -1,0 +1,189 @@
+---
+title: "Achar_FinnmarkSvalbard"
+author: "EEG"
+date: "15 11 2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+```{r}
+require(dplyr)
+require(tidyr)
+require(ggpubr)
+require(gridExtra)
+library(RGraphics)
+```
+
+
+```{r}
+quant_achar_finsval1 <- read_delim(here("data", "EEG_2021-11-15_Acharr_FinSval_plate1_CFX96_016.txt")) %>% 
+  mutate(plate = rep("plate1", dim(.)[1])) %>% 
+  dplyr::filter(Sample %in% as.character(c(567,568,570,571,573,574,576,577,579,580,582,583,586,587,589,590,592,593))) %>% 
+  arrange(desc(Sample)) %>%
+  dplyr::mutate(tech_rep = factor(rep(c(1:3), 18)))
+
+quant_achar_finsval2 <- read_delim(here("data", "EEG_2021-11-17_Acharr_finm_svalb_samprep3CFX96_016.txt")) %>% 
+  mutate(plate = rep("plate2", dim(.)[1])) %>% 
+  dplyr::filter(Sample %in% as.character(c(569,572,575,578,581,584,588,591,594))) %>% 
+arrange(desc(Sample)) %>% 
+  dplyr::mutate(tech_rep = factor(rep(c(1:6), 9)))
+
+quant_achar_finsval3 <- read_delim(here("data", "EEG_2021-11-26_Acharr_finm_svalb_samprep12_techrep46CFX96_016.txt")) %>% 
+  mutate(plate = rep("plate3", dim(.)[1])) %>% 
+  dplyr::filter(Sample %in% as.character(c(567,568,570,571,573,574,576,577,579, 580, 582, 583, 592,593))) %>% 
+  arrange(desc(Sample)) %>% 
+  dplyr::mutate(tech_rep = factor(c(c(4,5,4,5), rep((4:6), 12))))
+
+quant_achar_finsval0 <- rbind(quant_achar_finsval1, quant_achar_finsval2, quant_achar_finsval3)
+
+quant_achar_finsval <- quant_achar_finsval0 %>% mutate(detect = ifelse(SQ == "NaN", 0, 1))
+
+ 
+samples <- readxl::read_xlsx(here("data", "eDNAsamples_2021.xlsx")) %>%
+  janitor::clean_names(.) %>% 
+  mutate(across(extraction_date, ~ as.Date(as.character(.), format = '%Y-%m-%d'))) %>%
+  mutate(provetatt2 = as.character(provetatt)) %>%
+  mutate(across(provetatt, ~ as.Date(as.character(.), format = '%d.%m.%Y'))) %>%
+  mutate(across(volum, ~as.numeric(.))) %>% 
+  mutate(qbit1 = as.numeric(dna_ng_m_l_qubit_read1)) %>% 
+  mutate(qbit2 = as.numeric(dna_ng_m_l_qubit_read2)) %>% 
+  mutate(qbit_avg = (qbit1+qbit2)/2) %>% 
+  mutate(ngDNA_filt_volenhet = ((150*qbit_avg)/volum)) %>% 
+  mutate(tot_ngDNA = 150*qbit_avg) %>% mutate(dybde = as.numeric(dybde)) %>% 
+  rename(dyp = dybde)
+  
+
+```
+
+```{r}
+quant_achar_finsval_join <- quant_achar_finsval %>% dplyr::select(Content, Sample, Cq, SQ, plate, detect, tech_rep) %>%  dplyr::mutate(SQ = as.numeric(SQ)) %>% 
+  dplyr::arrange(desc(Sample)) %>% dplyr::mutate(Sample = factor(Sample)) %>% 
+left_join(., samples, by = c("Sample" = "provenr")) %>% mutate(SQ_vol = SQ/volum) %>% 
+  mutate(stasjon = factor(as.character(stasjon, ordered = T, levels = c("4","3","2","1","5","6", "TV", "BT", "LS"))))
+#View(quant_samples)
+
+nrep <- quant_achar_finsval_join %>% dplyr::group_by(Sample, sample_rep, stasjon) %>% count()
+ndetect <- quant_achar_finsval_join %>% dplyr::group_by(Sample, sample_rep, stasjon) %>% summarise(num_detect = sum(detect))
+
+achar_nrepdet <- left_join(nrep, ndetect, by = "Sample") %>% dplyr::select(-sample_rep.y, -stasjon.y) %>% rename(stasjon = stasjon.x, sample_rep = sample_rep.x)
+
+# stasj_dist <- read_delim(here("data", "stasj_lat_lon2.txt"), delim = "\t") %>%
+#   dplyr::filter(fylke %in% c("Finnmark", "Svalbard")) %>% 
+#   mutate(stasjon = factor(as.character(stasjon, ordered = T, levels = c("4","3","2","1","5","6", "TV", "BT", "LS"))))
+
+stasj_dist <- read_delim(here("data", "stasj_lat_lon4.txt"), delim = "\t") %>% dplyr::filter(fylke %in% c("Finnmark", "Svalbard")) %>% 
+  mutate(stasjon = factor(as.character(stasjon, ordered = T, levels = c("4","3","2","1","5","6", "TV", "BT", "LS"))))
+
+eDNAconc_achar_finnsval <- left_join(quant_achar_finsval_join, stasj_dist, by = c("innsjo" = "innsjo", "stasjon" = "stasjon", "dyp" = "dyp")) %>% dplyr::select(Sample, Cq, SQ, sample_rep, tech_rep, dyp, stasjon, innsjo, fylke.y, volum, SQ_vol, lat, lon, provetatt) %>% rename(fylke = "fylke.y")
+
+write_delim(eDNAconc_achar_finnsval, "eDNAconc_achar_finnsval.txt", delim = "\t")
+  
+achar_finn_forplot2 <- left_join(quant_achar_finsval_join, stasj_dist, by = "stasjon")
+
+quant_achar_finsvaltab <- achar_finn_forplot2 %>% dplyr::select(Sample, Cq, SQ, sample_rep, tech_rep, stasjon, innsjo, fylke, volum, SQ_vol)
+
+
+achar_nrepdet_forplot <- left_join(nrepdet, stasj_dist, by = "stasjon") %>% mutate(fraction = stringr::str_c(num_detect, n, sep = "/")) %>% ungroup() %>% dplyr::select(sample_rep, stasjon, fraction)
+
+achar_nrepdet_forplot_finn <- nrepdet_forplot %>% pivot_wider(names_from = stasjon, values_from = fraction) %>% dplyr::select(`4`, `3`, `2`, `1`, `5`, `6`)
+
+achar_nrepdet_forplot_sval <- nrepdet_forplot %>% pivot_wider(names_from = stasjon, values_from = fraction) %>% dplyr::select(BT, LS, TV)
+
+library(leaflet)
+library(leaflet.extras)
+medeDNAconc_achar <- eDNAconc_achar_finnsval %>% group_by(lat, lon, stasjon, fylke) %>% summarise_if(is.numeric, ~median(., na.rm = T))
+medeDNAconc_achar[is.na(medeDNAconc_achar)] <- 0
+
+#### Svalbard ####
+medeDNAconc_achar_sval <- medeDNAconc_achar %>% dplyr::filter(fylke == "Svalbard")
+
+medeDNAconc_achar_sval_map <- leaflet(medeDNAconc_achar_sval) %>% 
+    addTiles() %>% 
+     fitBounds(~min(lon, na.rm = TRUE), ~72, ~max(lon, na.rm = TRUE), ~max(lat, na.rm = TRUE)) %>% 
+  addCircleMarkers(color = "red", radius = ~log(SQ_vol*1e11, base = 10)) %>% 
+  addLabelOnlyMarkers(label = ~as.character(stasjon), labelOptions = labelOptions(noHide = T, direction = 'left', textOnly = T, textsize = "20px"))# %>% 
+  # addLegendSize(
+  #   values = log(1+meaneDNAconc_achar_sval$SQ_vol*1e11, base = 10),
+  #   color = 'red',
+  #   fillColor = 'red',
+  #   opacity = .5,
+  #   title = 'miljø-DNA konsentrasjon (ng/mL)',
+  #   shape = 'circle',
+  #   #labels = c("100", "1000", "10000", "100000", "100000"),
+  #   orientation = 'horizontal',
+  #   breaks = 6)
+ 
+  #addHeatmap(intensity = eDNAconc_achar_finnsval$SQ_vol, blur = 50)
+
+#### Langs grense jakobselv, kart ####
+medeDNAconc_achar_finn <- medeDNAconc_achar %>% dplyr::filter(fylke == "Finnmark")
+
+medeDNAconc_achar_finn_map <- leaflet(medeDNAconc_achar_finn) %>% 
+    addTiles() %>% 
+     fitBounds(~min(lon, na.rm = TRUE), ~min(lat, na.rm = TRUE), ~max(lon, na.rm = TRUE), ~max(lat, na.rm = TRUE)+0.04) %>% 
+  addCircleMarkers(color = "red", radius = ~log(SQ_vol*1e11, base = 10)) #%>% 
+  # addLabelOnlyMarkers(label = ~as.character(stasjon), labelOptions = labelOptions(noHide = T, direction = 'left', textOnly = T, textsize = "20px"))
+
+mapshot(medeDNAconc_achar_finn_map, file = "eDNAconc_achar_finn_map.png")
+
+```
+
+```{r}
+achar_finsval_plot <- ggplot(data = quant_achar_finsval_join, aes(x = factor(stasjon, ordered = T, levels =   c("4","3","2","1","5","6", "TV", "BT", "LS")), y = SQ_vol, color = sample_rep, text = Sample))+
+  geom_jitter(width = 0.1, size = 1.5)+
+  xlab("Stasjon")+
+  ylab("Ishavsrøye eDNA (ng/mL)")+
+  labs(color = "Prøvetakings-\nreplikat")+
+  scale_color_manual(values = c("red", "blue", "cyan"))+
+  facet_grid(cols = vars(fylke), space = "free_x", scales = "free_x", labeller = as_labeller(c("Finnmark" = "Finnmark - Grense Jakobselv", "Svalbard" = "Svalbard")))+
+  theme_bw()+
+  #scale_x_discrete()
+  scale_y_continuous(trans = "log10")#+
+  #ylim(0.5e-07, 1e-05)
+achar_finsval_plot
+
+#### distance from ocean, Grense Jakobselv ####
+achar_finn_plt2 <- ggplot(data = achar_finn_forplot2, aes(x = dist_hav, y = SQ_vol, color = sample_rep))+
+  geom_jitter(width = 0.2, size = 1.5)+
+  xlab("Distanse fra havet (km)")+
+  ylab("Ishavsrøye eDNA (ng/mL)")+
+  labs(color = "Prøvetakings-\nreplikat", title = "Grense Jakobselv")+
+  scale_color_manual(values = c("red", "blue", "cyan"))+
+  scale_y_continuous(trans = "log10", limits = c(1e-9,5e-3), breaks = c(1e-3, 1e-4, 1e-5, 1e-6, 1e-7, 1e-8, 1e-9))+
+  theme_bw()+
+  theme(axis.title = element_text(size = 10),
+        legend.title = element_text(size = 10),
+        plot.title = element_text(hjust = 0.5, size = 12))
+achar_finn_plt3 <- achar_finn_plt2 + annotate(geom = "table", x = 10, y = 5e-4, label = list(nrepdet_forplot_finn))
+
+
+achar_sval_plt <- ggplot(data = quant_achar_finsval_join %>% dplyr::filter(fylke == "Svalbard"), aes(x = stasjon, y = SQ_vol, color = sample_rep))+
+  geom_jitter(width = 0.15, size = 1.5)+
+  xlab("Stasjon")+
+  ylab("Ishavsrøye eDNA (ng/mL)")+
+  labs(color = "Prøvetakings-\nreplikat")+
+  scale_color_manual(values = c("red", "blue", "cyan"))+
+  scale_y_continuous(trans = "log10", limits = c(1e-9,5e-3), breaks = c(1e-3, 1e-4, 1e-5, 1e-6, 1e-7, 1e-8, 1e-9), labels = NULL)+
+  theme_bw()+
+  labs(title = "Svalbard")+
+  theme(axis.title = element_text(size = 10),
+        legend.title = element_text(size = 10),
+        axis.title.y = element_blank(),
+        plot.title = element_text(hjust = 0.5, size = 12))
+achar_sval_plt2 <- achar_sval_plt + annotate(geom = "table", x = 0.7, y = 5e-4, label = list(achar_nrepdet_forplot_sval))
+
+
+png(filename = "achar_finmark_svalbard_hires.png", width = 2300, height = 1000,
+    units = "px", pointsize = 8, bg = "white", res = 300,
+    restoreConsole = TRUE)
+ggarrange(achar_finn_plt2, achar_sval_plt, common.legend = TRUE, widths = c(2,1))
+
+dev.off()
+
+```

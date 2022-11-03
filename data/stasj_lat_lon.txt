@@ -1,0 +1,24 @@
+innsjø	fylke	stasjon	dist_hav	lat	lon
+GJE	Finnmark	1	24.1	69.64657	30.9377
+GJE	Finnmark	2	19.8	69.67527	30.93963
+GJE	Finnmark	3	13.8	69.70322	30.89109
+GJE	Finnmark	4	10	69.72446	30.88735
+GJE	Finnmark	5	28.1	69.61512	30.9522
+GJE	Finnmark	6	32	69.58291	30.94154
+BT	Svalbard	BT	NA	77.95993	14.26745
+LS	Svalbard	LS	NA	78.27182	13.77031
+TV	Svalbard	TV	NA	80.28408	22.59281
+Akersvannet	Vestfold	1	NA	59.2523523	10.3208257
+Akersvannet	Vestfold	3	NA	59.2523911	10.3321997
+Akersvannet	Vestfold	4	NA	59.2418512	10.3319709
+Akersvannet	Vestfold	2	NA	59.2346192	10.3202332
+Virikbekken	Vestfold	1		59.13147	10.19806
+Virikbekken	Vestfold	2		59.12893	10.20167
+Virikbekken	Vestfold	3		59.1274	10.20224
+Virikbekken	Vestfold	4		59.12414	10.20159
+Virikbekken	Vestfold	5		59.1058	10.20518
+Virikbekken	Vestfold	6		59.10554	10.20091
+Virikbekken	Vestfold	7		59.09477	10.20301
+Virikbekken	Vestfold	8		59.07343	10.1841
+Virikbekken	Vestfold	9		59.07989	10.20241
+Virikbekken	Vestfold	10		59.07941	10.20259
