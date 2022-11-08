@@ -87,7 +87,8 @@ stasj_dist <- read_delim(here("data", "stasj_lat_lon4.txt"), delim = "\t") %>%
 ps_finn_forplot2 <- left_join(ps_finn_forplot, stasj_dist, by = "stasjon")
 
 
-
+pslm <- lm(formula = log(SQ_vol) ~ dist_hav, data=ps_finn_forplot2)
+summary(pslm)
 # Plot pink salmon eDNA conc as function of distance from ocean
 ps_finn_plt2 <- ggplot(data = ps_finn_forplot2, aes(x = dist_hav, y = SQ_vol, color = sample_rep))+
   geom_jitter(width = 0.1, size = 1.5)+
@@ -99,8 +100,18 @@ ps_finn_plt2 <- ggplot(data = ps_finn_forplot2, aes(x = dist_hav, y = SQ_vol, co
   theme_bw()+
   theme(axis.title = element_text(size = 10),
         legend.title = element_text(size = 10),
-        plot.title = element_text(hjust = 0.5, size = 12))
+        plot.title = element_text(hjust = 0.5, size = 12))+
+  theme(legend.position = "none")
 ps_finn_plt2
+
+ragg::agg_png("onchogorb_gje.png", width = 6, height = 2.5, units = "in", res = 300, scaling = 1.5)
+ ps_finn_plt2
+ dev.off()
+
+ ragg::agg_png("onchogorb_gje_wlm.png", width = 6, height = 2.5, units = "in", res = 300, scaling = 1.5)
+ ps_finn_plt2+
+   geom_smooth(method = "lm", mapping=aes(y=exp(predict(pslm,ps_finn_forplot2))), color = "black")
+ dev.off()
 
 # calculate median concentration
 medeDNAconc_pinksal <- ps_finn_forplot2 %>% 
@@ -142,64 +153,6 @@ pinksal_nrepdet <- left_join(nrep_pinksal_fin, ndetect_pinksal_fin, by = "Sample
 
 
 
-# Trout
-```{r}
-quant_trout_fin1 <- read_delim(here("data", "EEG_2021-11-15_Trout_finn_svalb_plate1_CFX96_038st2.txt")) %>% 
-  mutate(plate = rep("plate1", dim(.)[1])) %>% 
-  dplyr::filter(Sample %in% as.character(c(567,568,570,571,573,574,576,577,579,580,582,583,586,587,589,590,592,593))) %>% 
-  arrange(desc(Sample))
-
-quant_trout_fin2 <- read_delim(here("data", "EEG_2021-11-24_trout_svalfinnm_plate2_CFX96_038std.txt")) %>% 
-  mutate(plate = rep("plate2", dim(.)[1])) %>% 
-  dplyr::filter(Sample %in% as.character(c(567,569,570,572,573,575,576, 578,579,581,582,584,586,588,589,591,592,594))) %>% 
-arrange(desc(Sample)) #%>% 
-  #dplyr::mutate(tech_rep = factor(rep(c(1:6), 9))) #Added tech rep manually
-
-
-quant_strutta_finn <- rbind(quant_trout_fin1, quant_trout_fin2) %>% 
-  mutate(detect = ifelse(SQ == "NaN", 0, 1))
-
-
-
-
-strutta_finn_forplot <- quant_strutta_finn %>% 
-  dplyr::select(Content, Sample, Cq, SQ, detect) %>% 
-  dplyr::filter(Sample %in% as.character(c(567:584))) %>% 
-  dplyr::arrange(desc(Sample)) %>% 
-  dplyr::mutate(Sample = factor(Sample)) %>% 
-  dplyr::mutate(SQ = as.numeric(SQ)) %>% 
-  #dplyr::mutate(tech_rep = factor(rep(c(1:6), 18))) %>% 
-  left_join(., samples_meta, by = c("Sample" = "provenr")) %>% 
-  mutate(SQ_vol = SQ/volum) %>% 
-  mutate(stasjon = factor(as.character(stasjon, ordered = T, levels = c("4","3","2","1","5","6"))))
-
-strutta_finn_forplot2 <- left_join(strutta_finn_forplot, stasj_dist, by = "stasjon")
-
-
-
-# Plot salmo trutta eDNA conc as function of distance from ocean
-strutta_finn_plt2 <- ggplot(data = strutta_finn_forplot2, aes(x = dist_hav, y = SQ_vol, color = sample_rep))+
-  geom_jitter(width = 0.1, size = 1.5)+
-  xlab("Distance from ocean (km)")+
-  ylab("eDNA (ng/mL)")+
-  labs(color = "Sampling\nreplicate")+
-  scale_color_manual(values = c("red", "blue", "cyan"))+
-  scale_y_continuous(trans = "log10", limits = c(1e-9,5e-3), breaks = c(1e-3, 1e-4, 1e-5, 1e-6, 1e-7, 1e-8, 1e-9))+
-  theme_bw()+
-  theme(axis.title = element_text(size = 10),
-        legend.title = element_text(size = 10),
-        plot.title = element_text(hjust = 0.5, size = 12))
-strutta_finn_plt2
-
-# calculate median concentration
-medeDNAconc_strutta <- strutta_finn_forplot2 %>% 
-  group_by(lat, lon, stasjon, fylke.x) %>% 
-  summarise_if(is.numeric, ~median(., na.rm = T)) %>% 
-  mutate(species = "strutta")
-
-medeDNAconc_strutta[is.na(medeDNAconc_strutta)] <- 0
-
-```
 
 # Atlantic salmon
 ```{r}
@@ -235,6 +188,9 @@ ssalar_finn_forplot2 <- left_join(ssalar_finn_forplot, stasj_dist, by = "stasjon
 
 
 # Plot salmo trutta eDNA conc as function of distance from ocean
+sslm <- lm(formula = log(SQ_vol) ~ dist_hav, data=ssalar_finn_forplot2)
+summary(sslm)
+
 ssalar_finn_plt2 <- ggplot(data = ssalar_finn_forplot2, aes(x = dist_hav, y = SQ_vol, color = sample_rep))+
   geom_jitter(width = 0.1, size = 1.5)+
   xlab("Distance from ocean (km)")+
@@ -245,8 +201,19 @@ ssalar_finn_plt2 <- ggplot(data = ssalar_finn_forplot2, aes(x = dist_hav, y = SQ
   theme_bw()+
   theme(axis.title = element_text(size = 10),
         legend.title = element_text(size = 10),
-        plot.title = element_text(hjust = 0.5, size = 12))
+        plot.title = element_text(hjust = 0.5, size = 12))+
+  theme(legend.position = "none")
 ssalar_finn_plt2
+
+
+ragg::agg_png("salsalar_gje.png", width = 6, height = 2.5, units = "in", res = 300, scaling = 1.5)
+ ssalar_finn_plt2
+ dev.off()
+
+ ragg::agg_png("salsalar_gje_wlm.png", width = 6, height = 2.5, units = "in", res = 300, scaling = 1.5)
+ ssalar_finn_plt2+
+   geom_smooth(method = "lm", mapping=aes(y=exp(predict(sslm,ssalar_finn_forplot2))), color = "black")
+ dev.off()
 
 # calculate median concentration
 medeDNAconc_ssalar <- ssalar_finn_forplot2 %>% 
@@ -255,6 +222,77 @@ medeDNAconc_ssalar <- ssalar_finn_forplot2 %>%
   mutate(species = "ssalar")
 
 medeDNAconc_ssalar[is.na(medeDNAconc_ssalar)] <- 0
+
+```
+
+# Trout
+```{r}
+quant_trout_fin1 <- read_delim(here("data", "EEG_2021-11-15_Trout_finn_svalb_plate1_CFX96_038st2.txt")) %>% 
+  mutate(plate = rep("plate1", dim(.)[1])) %>% 
+  dplyr::filter(Sample %in% as.character(c(567,568,570,571,573,574,576,577,579,580,582,583,586,587,589,590,592,593))) %>% 
+  arrange(desc(Sample))
+
+quant_trout_fin2 <- read_delim(here("data", "EEG_2021-11-24_trout_svalfinnm_plate2_CFX96_038std.txt")) %>% 
+  mutate(plate = rep("plate2", dim(.)[1])) %>% 
+  dplyr::filter(Sample %in% as.character(c(567,569,570,572,573,575,576, 578,579,581,582,584,586,588,589,591,592,594))) %>% 
+arrange(desc(Sample)) #%>% 
+  #dplyr::mutate(tech_rep = factor(rep(c(1:6), 9))) #Added tech rep manually
+
+
+quant_strutta_finn <- rbind(quant_trout_fin1, quant_trout_fin2) %>% 
+  mutate(detect = ifelse(SQ == "NaN", 0, 1))
+
+
+
+
+strutta_finn_forplot <- quant_strutta_finn %>% 
+  dplyr::select(Content, Sample, Cq, SQ, detect) %>% 
+  dplyr::filter(Sample %in% as.character(c(567:584))) %>% 
+  dplyr::arrange(desc(Sample)) %>% 
+  dplyr::mutate(Sample = factor(Sample)) %>% 
+  dplyr::mutate(SQ = as.numeric(SQ)) %>% 
+  #dplyr::mutate(tech_rep = factor(rep(c(1:6), 18))) %>% 
+  left_join(., samples_meta, by = c("Sample" = "provenr")) %>% 
+  mutate(SQ_vol = SQ/volum) %>% 
+  mutate(stasjon = factor(as.character(stasjon, ordered = T, levels = c("4","3","2","1","5","6"))))
+
+strutta_finn_forplot2 <- left_join(strutta_finn_forplot, stasj_dist, by = "stasjon")
+
+
+stlm <- lm(formula = log(SQ_vol) ~ dist_hav, data=strutta_finn_forplot2)
+summary(stlm)
+
+# Plot salmo trutta eDNA conc as function of distance from ocean
+strutta_finn_plt2 <- ggplot(data = strutta_finn_forplot2, aes(x = dist_hav, y = SQ_vol, color = sample_rep))+
+  geom_jitter(width = 0.1, size = 1.5)+
+  xlab("Distance from ocean (km)")+
+  ylab("eDNA (ng/mL)")+
+  labs(color = "Sampling\nreplicate")+
+  scale_color_manual(values = c("red", "blue", "cyan"))+
+  scale_y_continuous(trans = "log10", limits = c(1e-9,5e-3), breaks = c(1e-3, 1e-4, 1e-5, 1e-6, 1e-7, 1e-8, 1e-9))+
+  theme_bw()+
+  theme(axis.title = element_text(size = 10),
+        legend.title = element_text(size = 10),
+        plot.title = element_text(hjust = 0.5, size = 12))+
+  theme(legend.position = "none")
+strutta_finn_plt2
+
+ragg::agg_png("saltrut_gje.png", width = 6, height = 2.5, units = "in", res = 300, scaling = 1.5)
+ strutta_finn_plt2
+ dev.off()
+
+ ragg::agg_png("saltrut_gje_wlm.png", width = 6, height = 2.5, units = "in", res = 300, scaling = 1.5)
+ strutta_finn_plt2+
+   geom_smooth(method = "lm", mapping=aes(y=exp(predict(stlm, strutta_finn_forplot2))), color = "black")
+ dev.off()
+
+# calculate median concentration
+medeDNAconc_strutta <- strutta_finn_forplot2 %>% 
+  group_by(lat, lon, stasjon, fylke.x) %>% 
+  summarise_if(is.numeric, ~median(., na.rm = T)) %>% 
+  mutate(species = "strutta")
+
+medeDNAconc_strutta[is.na(medeDNAconc_strutta)] <- 0
 
 ```
 
@@ -294,6 +332,8 @@ salpin_finn_forplot <- quant_salpin_finn %>%
 salpin_finn_forplot2 <- left_join(salpin_finn_forplot, stasj_dist, by = "stasjon")
 
 
+salm <- lm(formula = log(SQ_vol) ~ dist_hav, data=salpin_finn_forplot2)
+summary(salm)
 
 # Plot salmo trutta eDNA conc as function of distance from ocean
 salpin_finn_plt2 <- ggplot(data = salpin_finn_forplot2, aes(x = dist_hav, y = SQ_vol, color = sample_rep))+
@@ -306,8 +346,18 @@ salpin_finn_plt2 <- ggplot(data = salpin_finn_forplot2, aes(x = dist_hav, y = SQ
   theme_bw()+
   theme(axis.title = element_text(size = 10),
         legend.title = element_text(size = 10),
-        plot.title = element_text(hjust = 0.5, size = 12))
+        plot.title = element_text(hjust = 0.5, size = 12))+
+  theme(legend.position = "none")
 salpin_finn_plt2
+
+ragg::agg_png("salpin_gje.png", width = 6, height = 2.5, units = "in", res = 300, scaling = 1.5)
+ salpin_finn_plt2
+ dev.off()
+
+ ragg::agg_png("salpin_gje_wlm.png", width = 6, height = 2.5, units = "in", res = 300, scaling = 1.5)
+ salpin_finn_plt2+
+   geom_smooth(method = "lm", mapping=aes(y=exp(predict(salm, salpin_finn_forplot2))), color = "black", linetype = "dashed")
+ dev.off()
 
 # calculate median concentration
 medeDNAconc_salpin <- salpin_finn_forplot2 %>% 
@@ -318,6 +368,10 @@ medeDNAconc_salpin <- salpin_finn_forplot2 %>%
 medeDNAconc_salpin[is.na(medeDNAconc_salpin)] <- 0
 
 ```
+
+
+
+
 ```{r}
 plotlist <- list(ps_finn_plt2+theme(axis.title.x = element_blank()), ssalar_finn_plt2+theme(axis.title.x = element_blank()), 
                  strutta_finn_plt2+theme(axis.title.x = element_blank()), salpin_finn_plt2)
@@ -335,18 +389,27 @@ medeDNAconc0 <- bind_rows(medeDNAconc_pinksal, medeDNAconc_salpin, medeDNAconc_s
   mutate(species = factor(species))
 
 medeDNAconc <- medeDNAconc0 %>% 
-  mutate(dist_hav_fact = factor(as.character(dist_hav), levels = rev(as.character(unique(medeDNAconc0$dist_hav))), ordered = T))
+  mutate(dist_hav_fact = factor(as.character(dist_hav), levels = rev(as.character(unique(medeDNAconc0$dist_hav))), ordered = T)) %>% 
+  mutate(species = factor(species, levels = c("pinksal", "ssalar", "strutta", "salpin"), ordered = T))
 
 dnabreaks = c(1e1, 1e2, 1e3, 1e4, 1e5, 1e6, 1e7, 1e8)
 dnalables = as.character(scientific(dnabreaks/1e9))
 
-ggplot(data = medeDNAconc, aes(x = dist_hav, y = SQ_vol*1e9, fill = species))+
+medeDNAconc %>% group_by(stasjon) %>% summarise_if(is.numeric, range)
+
+medconc <- ggplot(data = medeDNAconc, aes(x = dist_hav, y = SQ_vol*1e9, fill = species))+
   geom_bar(stat = "identity", position = "dodge")+
+  ylab("eDNA (ng/mL)")+
+  xlab("Distance from ocean (km)")+
+  labs(fill = "Species")+
+  scale_fill_discrete(labels = c("Pink salmon", "Atlantic salmon", "Trout", "Charr"))+
   scale_y_continuous(trans = "log10", breaks = c(1e1, 1e2, 1e3, 1e4, 1e5, 1e6, 1e7, 1e8), labels = dnalables)+
   scale_x_continuous(breaks = c(10, 13.8, 19.8, 24.1, 28.1, 32))
+medconc
 
-
-
+ragg::agg_png("median_conc_allspec.png", width = 10, height = 5, units = "in", res = 300, scaling = 1.5)
+ medconc
+ dev.off()
 
   
 
