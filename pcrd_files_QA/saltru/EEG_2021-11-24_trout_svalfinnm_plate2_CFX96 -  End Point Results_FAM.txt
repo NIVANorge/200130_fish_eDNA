@@ -1,0 +1,71 @@
+	Well	Fluor	Target	Content	Sample	End RFU	Call	Sample Type	CallType	Is Control
+	A01	FAM		Std	saltru_std0	12756.1360628832	(+) Positive	Standard	Positive	False
+	A02	FAM		Std	saltru_std0	12972.0490258008	(+) Positive	Standard	Positive	False
+	A04	FAM		Unkn	567	4960.68375237289	(+) Positive	Unknown	Positive	False
+	A05	FAM		Unkn	567	5924.79745555946	(+) Positive	Unknown	Positive	False
+	A06	FAM		Unkn	569	4920.98792808867	(+) Positive	Unknown	Positive	False
+	A07	FAM		Unkn	569	4667.03238255616	(+) Positive	Unknown	Positive	False
+	A08	FAM		Unkn	569	6531.05066890748	(+) Positive	Unknown	Positive	False
+	A09	FAM		Unkn	589	17.6747316054784		Unknown	NoCall	False
+	A10	FAM		Unkn	589	22.172479613595		Unknown	NoCall	False
+	B01	FAM		Std	saltru_std1	13429.7710592057	(+) Positive	Standard	Positive	False
+	B02	FAM		Std	saltru_std1	14182.1262771774	(+) Positive	Standard	Positive	False
+	B03	FAM		Std	saltru_std1	13848.5939286488	(+) Positive	Standard	Positive	False
+	B04	FAM		Unkn	570	6662.18412943831	(+) Positive	Unknown	Positive	False
+	B05	FAM		Unkn	570	7058.39880835657	(+) Positive	Unknown	Positive	False
+	B06	FAM		Unkn	572	7577.94198363211	(+) Positive	Unknown	Positive	False
+	B07	FAM		Unkn	572	8618.28391085151	(+) Positive	Unknown	Positive	False
+	B08	FAM		Unkn	572	8358.10361883532	(+) Positive	Unknown	Positive	False
+	B09	FAM		Unkn	591	13.6317972236451		Unknown	NoCall	False
+	B10	FAM		Unkn	591	5301.98443202004	(+) Positive	Unknown	Positive	False
+	B11	FAM		Unkn	591	3115.70743844989	(+) Positive	Unknown	Positive	False
+	C01	FAM		Std	saltru_std2	13233.468887851	(+) Positive	Standard	Positive	False
+	C02	FAM		Std	saltru_std2	13121.9437246324	(+) Positive	Standard	Positive	False
+	C03	FAM		Std	saltru_std2	13118.5085276611	(+) Positive	Standard	Positive	False
+	C04	FAM		Unkn	573	8063.13537850457	(+) Positive	Unknown	Positive	False
+	C05	FAM		Unkn	573	8317.37499407699	(+) Positive	Unknown	Positive	False
+	C06	FAM		Unkn	575	8669.61204196257	(+) Positive	Unknown	Positive	False
+	C07	FAM		Unkn	575	7978.08139874382	(+) Positive	Unknown	Positive	False
+	C08	FAM		Unkn	575	8144.72844529139	(+) Positive	Unknown	Positive	False
+	C09	FAM		Unkn	592	7.96473369298201		Unknown	NoCall	False
+	C10	FAM		Unkn	592	11.251861555972		Unknown	NoCall	False
+	D03	FAM		Std	saltru_std3	11968.4971372291	(+) Positive	Standard	Positive	False
+	D04	FAM		Unkn	576	10485.6957630845	(+) Positive	Unknown	Positive	False
+	D05	FAM		Unkn	576	10366.7166662604	(+) Positive	Unknown	Positive	False
+	D06	FAM		Unkn	578	5986.17306415456	(+) Positive	Unknown	Positive	False
+	D07	FAM		Unkn	578	7474.23328294661	(+) Positive	Unknown	Positive	False
+	D08	FAM		Unkn	578	6613.78775193118	(+) Positive	Unknown	Positive	False
+	D09	FAM		Unkn	594	11.3381088501752		Unknown	NoCall	False
+	D10	FAM		Unkn	594	15.7563076956276		Unknown	NoCall	False
+	D11	FAM		Unkn	594	37.3248040655662		Unknown	NoCall	False
+	E01	FAM		Std	saltru_std4	6664.2959914098	(+) Positive	Standard	Positive	False
+	E04	FAM		Neg Ctrl	585	8.3964565479584		ControlNegative	Negative	True
+	E05	FAM		Neg Ctrl	585	23.2187531336964		ControlNegative	Negative	True
+	E06	FAM		Neg Ctrl	585	9.71903876043707		ControlNegative	Negative	True
+	E07	FAM		Neg Ctrl	nc_plt	5.86085229070559		ControlNegative	Negative	True
+	E08	FAM		Neg Ctrl	nc_plt	2.94876061114137		ControlNegative	Negative	True
+	E09	FAM		Neg Ctrl	nc_plt	18.4152147651348		ControlNegative	Negative	True
+	E10	FAM		Neg Ctrl	595	9.71018606979451		ControlNegative	Negative	True
+	E11	FAM		Neg Ctrl	595	15.7377699849189		ControlNegative	Negative	True
+	E12	FAM		Neg Ctrl	595	18.6848297299845		ControlNegative	Negative	True
+	F04	FAM		Unkn	579	5439.58572681521	(+) Positive	Unknown	Positive	False
+	F05	FAM		Unkn	579	7494.606797617	(+) Positive	Unknown	Positive	False
+	F06	FAM		Unkn	581	5127.82619472556	(+) Positive	Unknown	Positive	False
+	F07	FAM		Unkn	581	4207.23426709023	(+) Positive	Unknown	Positive	False
+	F08	FAM		Unkn	581	4762.35210975149	(+) Positive	Unknown	Positive	False
+	G01	FAM		Neg Ctrl	nc_ext	10.7666603275649		ControlNegative	Negative	True
+	G02	FAM		Neg Ctrl	nc_ext	17.9746089872129		ControlNegative	Negative	True
+	G03	FAM		Neg Ctrl	nc_ext	9.74072177470116		ControlNegative	Negative	True
+	G04	FAM		Unkn	582	6415.71990108385	(+) Positive	Unknown	Positive	False
+	G05	FAM		Unkn	582	7195.32373827064	(+) Positive	Unknown	Positive	False
+	G06	FAM		Unkn	584	4145.74847737749	(+) Positive	Unknown	Positive	False
+	G07	FAM		Unkn	584	7135.30245410892	(+) Positive	Unknown	Positive	False
+	G08	FAM		Unkn	584	6649.23101922702	(+) Positive	Unknown	Positive	False
+	H01	FAM		Neg Ctrl	nc_mm	28.6357861329563		ControlNegative	Negative	True
+	H02	FAM		Neg Ctrl	nc_mm	9.08909878916002		ControlNegative	Negative	True
+	H03	FAM		Neg Ctrl	nc_mm	10.8819828065343		ControlNegative	Negative	True
+	H04	FAM		Unkn	586	216.511610222719		Unknown	NoCall	False
+	H05	FAM		Unkn	586	2009.12219156167	(+) Positive	Unknown	Positive	False
+	H06	FAM		Unkn	588	2813.57491711497	(+) Positive	Unknown	Positive	False
+	H07	FAM		Unkn	588	1051.08523019274		Unknown	NoCall	False
+	H08	FAM		Unkn	588	2624.84495184173	(+) Positive	Unknown	Positive	False

@@ -1,0 +1,33 @@
+		1	2	3	4	5	6	7	8	9	10	11	12
+A	Content	Std	Std	Std	Unkn	Unkn	Unkn	Unkn	Unkn	Unkn	Unkn	Unkn	Unkn
+A	Sample	salalp_std0	salalp_std0	salalp_std0	569	569	569	569	569	569	594	594	594
+A	Peak 1												
+A	Peak 2												
+B	Content	Std	Std	Std	Unkn	Unkn	Unkn	Unkn	Unkn	Unkn	Unkn	Unkn	Unkn
+B	Sample	salalp_std1	salalp_std1	salalp_std1	572	572	572	572	572	572	594	594	594
+B	Peak 1												
+B	Peak 2												
+C	Content	Std	Std	Std	Unkn	Unkn	Unkn	Unkn	Unkn	Unkn	Unkn	Unkn	Unkn
+C	Sample	salalp_std2	salalp_std2	salalp_std2	575	575	575	575	575	575	591	591	591
+C	Peak 1												
+C	Peak 2												
+D	Content	Std	Std	Std	Unkn	Unkn	Unkn	Unkn	Unkn	Unkn	Unkn	Unkn	Unkn
+D	Sample	salalp_std3	salalp_std3	salalp_std3	578	578	578	578	578	578	591	591	591
+D	Peak 1												
+D	Peak 2												
+E	Content	Std	Std	Std	Neg Ctrl	Neg Ctrl	Neg Ctrl	Neg Ctrl	Neg Ctrl	Neg Ctrl	Neg Ctrl	Neg Ctrl	Neg Ctrl
+E	Sample	salalp_std4	salalp_std4	salalp_std4	585	585	585	nc_plt	nc_plt	nc_plt	595	595	595
+E	Peak 1												
+E	Peak 2												
+F	Content		Std	Std	Unkn	Unkn	Unkn	Unkn	Unkn	Unkn			
+F	Sample		salalp_std5	salalp_std5	581	581	581	581	581	581			
+F	Peak 1												
+F	Peak 2												
+G	Content	Neg Ctrl	Neg Ctrl	Neg Ctrl	Unkn	Unkn	Unkn	Unkn	Unkn	Unkn			
+G	Sample	nc_ext	nc_ext	nc_ext	584	584	584	584	584	584			
+G	Peak 1												
+G	Peak 2												
+H	Content	Neg Ctrl	Neg Ctrl	Neg Ctrl	Unkn	Unkn	Unkn	Unkn	Unkn	Unkn			
+H	Sample	nc_mm	nc_mm	nc_mm	588	588	588	588	588	588			
+H	Peak 1												
+H	Peak 2												
