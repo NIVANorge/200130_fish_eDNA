@@ -31,6 +31,7 @@ library(mgcv)
 library(scales)
 library(agricolae)
 library(tibble)
+library(plotly)
 Sys.setlocale(locale='no_NB.utf8')
 Sys.getlocale()
 #remotes::install_github("r-spatial/mapview")
@@ -41,30 +42,99 @@ Sys.getlocale()
 # Read meta data files
 ```{r}
 
-samples_meta <- readxl::read_xlsx(here("data", "eDNAsamples_2021.xlsx")) %>%
-  janitor::clean_names(.) %>% 
-  mutate(across(extraction_date, ~ as.Date(as.character(.), format = '%Y-%m-%d'))) %>%
-  mutate(provetatt2 = as.character(provetatt)) %>%
-  mutate(across(provetatt, ~ as.Date(as.character(.), format = '%d.%m.%Y'))) %>%
-  mutate(across(volum, ~as.numeric(.))) %>% 
-  mutate(qbit1 = as.numeric(dna_ng_m_l_qubit_read1)) %>% 
-  mutate(qbit2 = as.numeric(dna_ng_m_l_qubit_read2)) %>% 
-  mutate(qbit_avg = (qbit1+qbit2)/2) %>% 
-  mutate(ngDNA_filt_volenhet = ((150*qbit_avg)/volum)) %>% 
-  mutate(tot_ngDNA = 150*qbit_avg) %>% 
-  mutate(dybde = as.numeric(dybde)) %>% 
-  rename(dyp = dybde)
+samples_meta <- readxl::read_xlsx(here("data", "eDNAsamples_GJE_2021_Rform.xlsx")) %>% 
+  mutate(sampl_replicate = as.factor(sampl_replicate))
+
+```
+
+# Read QA pcrd-files in one go
+```{r}
+speciespath <- paste0("export_pcrd_files_QA/", c("oncgor", "salsal", "saltru", "salalp"))
+specieslist <- c("oncgor", "salsal", "saltru", "salalp")
+
+
+list.files(path = here(speciespath[1]), pattern = "Quantification Summary.txt")
+
+
+combined_dfs <- list()
+platelistlist <- list()
+for (i in seq_along(speciespath)) {
+  platelistlist[[i]] <- list.files(path = here(speciespath[i]), pattern = "Quantification Summary.txt")
+  tmppath <- speciespath[i]
+  species <- specieslist[i]
+  dfs <- list()
+  for (j in seq_along(platelistlist[[i]])) {
+    print(platelistlist[[i]][j])
+    print(tmppath)
+    dfs[[j]] <- read.table(here(tmppath, platelistlist[[i]][j]), header = T, sep = "\t") %>% 
+       mutate(plate = paste0("plate", j)) %>% 
+      mutate(species = specieslist[i]) %>% 
+      mutate(filename = platelistlist[[i]][j])
+    print(length(dfs))
+    combined <- do.call("rbind",dfs)
+    print(combined)
+  
+  }
+    combined_dfs[[i]] <- combined
+}
+
+all_species <- do.call("rbind",combined_dfs) %>% 
+  dplyr::select(Content, Sample, Cq, SQ, plate, species, filename) %>% 
+  mutate(filter = as.character(Sample)) %>% 
+  dplyr::mutate(SQ = as.numeric(SQ))
+
+all_species_meta <- left_join(all_species, samples_meta, by = c("Sample" = "filter")) %>% 
+  mutate(spec_edna_ngml = SQ/volume) %>% 
+  dplyr::filter(Content == "Unkn") %>% 
+  dplyr::filter(!is.na(dist_ocean)) %>% 
+  dplyr::filter(!is.na(spec_edna_ngml)) %>% 
+  mutate(species = as.factor(species))
+
+dim(all_species_meta)
+
+all_species_meta_median <- all_species_meta %>% 
+  group_by(species, station, sampl_replicate, lat, lon) %>% 
+  mutate(median_sq = median(spec_edna_ngml)) %>%  
+  rowwise() %>% 
+  mutate(mediandiff = abs(spec_edna_ngml-median_sq)) %>% 
+  group_by(species, station, sampl_replicate, lat, lon) %>%
+  slice_min(., order_by = mediandiff, n = 3)
+  
+all_species_meta_median_formodel <- all_species_meta_median %>% dplyr::select(-median_sq, -mediandiff, -edna_elut, -filename, -Cq, -Content, -plate, -SQ, -Sample)
+
+
+writexl::write_xlsx(all_species_meta_median_formodel, here("data", "eDNAconc_salmonids_GrenseJRiver_finalw_PinkSalcounts.xlsx"))
+
+
+```
+
+
+```{r}
+facetplot <- ggplot(all_species_meta, aes(x = dist_ocean, y = log10(SQ_vol), text = filename, group = station))+
+  facet_grid(rows = vars(species))+
+  geom_boxplot(outlier.alpha = 0)+
+  geom_jitter(width = 0.5, aes(color = sampl_replicate))#+
+  #geom_text(data = pinksal.summarised, aes(x = dist_hav, y = 0.2+max.edna, label = pinksal_groups$groups))+
+  xlab("Distance from ocean (km)")+
+  ylab("eDNA conc. (ng/mL)")+
+  labs(color = "Sampling\nreplicate")+
+  scale_color_manual(values = c("red", "blue", "cyan"))+
+  #scale_y_continuous(trans = "log10", limits = fishlim, breaks = fishbreaks)+
+  theme_bw()+
+  theme(axis.title = element_text(size = 10),
+        legend.title = element_text(size = 10),
+        plot.title = element_text(hjust = 0.5, size = 12))+
+  geom_smooth(aes(group = 1), se = TRUE, method = "gam",formula = y ~ poly(x, 4))+
+  annotate("text", x = Inf, y = Inf, label = "Pink Salmon", hjust = 1.1, vjust = 1.3)
+  
+  ggplotly(facetplot_median)
 ```
 
 
 # Pink salmon
 
 ```{r}
-ps_finn_q1 <- read_delim(here("data", "EEG_2021-11-02-plt1_pukkellaks_finnmark_CFX96.txt")) 
-ps_finn_q2 <- read_delim(here("data", "EEG_2021-11-03-plt2_pukkellaks_finnmark_CFX96.txt"))
-ps_finn <- rbind(ps_finn_q1, ps_finn_q2)
 
-quant_pinksal_finn <- ps_finn %>% mutate(detect = ifelse(SQ == "NaN", 0, 1))
 
 
 
@@ -94,10 +164,7 @@ ps_finn_forplot <- quant_pinksal_finn %>%
   mutate(SQ_vol = 10*SQ/volum) %>% 
   mutate(stasjon = factor(as.character(stasjon, ordered = T, levels = c("4","3","2","1","5","6"))))
 
-# Read file with info about distance from ocean 
-stasj_dist <- read_delim(here("data", "stasj_lat_lon4.txt"), delim = "\t") %>%
-  dplyr::filter(fylke %in% c("Finnmark")) %>% 
-  mutate(stasjon = factor(as.character(stasjon, ordered = T, levels = c("4","3","2","1","5","6"))))
+
 
 ps_finn_forplot2 <- left_join(ps_finn_forplot, stasj_dist, by = "stasjon")
 
@@ -268,25 +335,7 @@ pinksal_bp
 
 ```
 
-## Map, pink salmon
-```{r}
-#### Langs grense jakobselv, kart ####
-medeDNAconc_pinksal_finn <- medeDNAconc_pinksal 
 
-
-#log(SQ_vol*1e11, base = 10)
-#sqrt(SQ_vol*1e11)
-
-medeDNAconc_pinksal_finn_map <- leaflet(medeDNAconc_pinksal_finn) %>% 
-    addTiles() %>% 
-     fitBounds(~min(lon, na.rm = TRUE), ~min(lat, na.rm = TRUE), ~max(lon, na.rm = TRUE), ~max(lat, na.rm = TRUE)+0.04) %>% 
-  addCircleMarkers(color = "red", radius = ~log(SQ_vol*10e8)) #%>% 
-  # addLabelOnlyMarkers(label = ~as.character(stasjon), labelOptions = labelOptions(noHide = T, direction = 'left', textOnly = T, textsize = "20px"))
-
-# four-element numeric vector specifying the top, left, width, and height
-mapshot(medeDNAconc_pinksal_finn_map, file = "eDNAconc_pinksal_finn.png")
-
-```
 
 ## Number of replicates detected, pink salmon
 ```{r}
