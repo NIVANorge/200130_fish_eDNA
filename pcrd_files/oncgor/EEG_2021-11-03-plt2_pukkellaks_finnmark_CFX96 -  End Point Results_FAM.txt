@@ -1,0 +1,96 @@
+	Well	Fluor	Target	Content	Sample	End RFU	Call	Sample Type	CallType	Is Control
+	A01	FAM	NA	Std	oncgor_std1	3432.68794185245	(+) Positive	Standard	Positive	False
+	A02	FAM	NA	Std	oncgor_std1	3717.800613338	(+) Positive	Standard	Positive	False
+	A03	FAM	NA	Std	oncgor_std1	3602.60101506764	(+) Positive	Standard	Positive	False
+	A04	FAM	NA	Unkn	576	3445.87409343853	(+) Positive	Unknown	Positive	False
+	A05	FAM	NA	Unkn	576	3386.33858020948	(+) Positive	Unknown	Positive	False
+	A06	FAM	NA	Unkn	576	3628.13635853259	(+) Positive	Unknown	Positive	False
+	A07	FAM	NA	Unkn	576	3387.51693420688	(+) Positive	Unknown	Positive	False
+	A08	FAM	NA	Unkn	576	3663.13124114476	(+) Positive	Unknown	Positive	False
+	A09	FAM	NA	Unkn	576	3398.51053430874	(+) Positive	Unknown	Positive	False
+	A10	FAM	NA	Unkn	583	761.607698897956	(+) Positive	Unknown	Positive	False
+	A11	FAM	NA	Unkn	583	204.688552113465		Unknown	NoCall	False
+	A12	FAM	NA	Unkn	583	-2.93741977808186		Unknown	NoCall	False
+	B01	FAM	NA	Std	oncgor_std2	3400.94923308804	(+) Positive	Standard	Positive	False
+	B02	FAM	NA	Std	oncgor_std2	3673.79954482725	(+) Positive	Standard	Positive	False
+	B03	FAM	NA	Std	oncgor_std2	3585.52674711653	(+) Positive	Standard	Positive	False
+	B04	FAM	NA	Unkn	577	3539.2925011581	(+) Positive	Unknown	Positive	False
+	B05	FAM	NA	Unkn	577	3665.0764831289	(+) Positive	Unknown	Positive	False
+	B06	FAM	NA	Unkn	577	3502.26050291662	(+) Positive	Unknown	Positive	False
+	B07	FAM	NA	Unkn	577	3615.65130748519	(+) Positive	Unknown	Positive	False
+	B08	FAM	NA	Unkn	577	3306.49038305518	(+) Positive	Unknown	Positive	False
+	B09	FAM	NA	Unkn	577	3348.45738386716	(+) Positive	Unknown	Positive	False
+	B10	FAM	NA	Unkn	583	1046.31695907555	(+) Positive	Unknown	Positive	False
+	B11	FAM	NA	Unkn	583	649.566607809991	(+) Positive	Unknown	Positive	False
+	B12	FAM	NA	Unkn	583	574.821224005009	(+) Positive	Unknown	Positive	False
+	C01	FAM	NA	Std	oncgor_std3	2836.39539714965	(+) Positive	Standard	Positive	False
+	C02	FAM	NA	Std	oncgor_std3	3244.40406773965	(+) Positive	Standard	Positive	False
+	C03	FAM	NA	Std	oncgor_std3	3030.56609218412	(+) Positive	Standard	Positive	False
+	C04	FAM	NA	Unkn	578	2830.34876302036	(+) Positive	Unknown	Positive	False
+	C05	FAM	NA	Unkn	578	3363.73987056217	(+) Positive	Unknown	Positive	False
+	C06	FAM	NA	Unkn	578	3579.63041063851	(+) Positive	Unknown	Positive	False
+	C07	FAM	NA	Neg Ctrl	nc_plt	-1.27069378918623		ControlNegative	Negative	True
+	C08	FAM	NA	Neg Ctrl	nc_plt	-0.329436574744432		ControlNegative	Negative	True
+	C09	FAM	NA	Neg Ctrl	nc_plt	-1.61469257063472		ControlNegative	Negative	True
+	C10	FAM	NA	Unkn	584	-4.46391415063681		Unknown	NoCall	False
+	C11	FAM	NA	Unkn	584	-1.49899443427767		Unknown	NoCall	False
+	C12	FAM	NA	Unkn	584	0.608911730473847		Unknown	NoCall	False
+	D01	FAM	NA	Std	oncgor_std4	2306.83002754739	(+) Positive	Standard	Positive	False
+	D02	FAM	NA	Std	oncgor_std4	2422.49521863301	(+) Positive	Standard	Positive	False
+	D03	FAM	NA	Std	oncgor_std4	3054.50574177523	(+) Positive	Standard	Positive	False
+	D04	FAM	NA	Unkn	578	3611.1442505717	(+) Positive	Unknown	Positive	False
+	D05	FAM	NA	Unkn	578	3359.75882056417	(+) Positive	Unknown	Positive	False
+	D06	FAM	NA	Unkn	578	3764.73911556376	(+) Positive	Unknown	Positive	False
+	D07	FAM	NA	Neg Ctrl	nc_ext	-2.26426723713776		ControlNegative	Negative	True
+	D08	FAM	NA	Neg Ctrl	nc_ext	-1.09378930101466		ControlNegative	Negative	True
+	D09	FAM	NA	Neg Ctrl	nc_ext	-1.24137658907694		ControlNegative	Negative	True
+	D10	FAM	NA	Unkn	584	266.398773960774		Unknown	NoCall	False
+	D11	FAM	NA	Unkn	584	-4.41746993993511		Unknown	NoCall	False
+	D12	FAM	NA	Unkn	584	-0.247670081572323		Unknown	NoCall	False
+	E01	FAM	NA	Std	oncgor_std5	705.347674462264	(+) Positive	Standard	Positive	False
+	E02	FAM	NA	Std	oncgor_std5	1675.21760251957	(+) Positive	Standard	Positive	False
+	E03	FAM	NA	Std	oncgor_std5	1282.93297306655	(+) Positive	Standard	Positive	False
+	E04	FAM	NA	Unkn	579	1733.44380444746	(+) Positive	Unknown	Positive	False
+	E05	FAM	NA	Unkn	579	1607.75266840208	(+) Positive	Unknown	Positive	False
+	E06	FAM	NA	Unkn	579	1759.5571941685	(+) Positive	Unknown	Positive	False
+	E07	FAM	NA	Unkn	579	1440.24739917631	(+) Positive	Unknown	Positive	False
+	E08	FAM	NA	Unkn	579	1341.96187409919	(+) Positive	Unknown	Positive	False
+	E09	FAM	NA	Unkn	579	1683.31325922159	(+) Positive	Unknown	Positive	False
+	E10	FAM	NA	Unkn	546	1.87934740741266		Unknown	NoCall	False
+	E11	FAM	NA	Unkn	546	3.25553573695688		Unknown	NoCall	False
+	E12	FAM	NA	Unkn	546	1.98165557851007		Unknown	NoCall	False
+	F01	FAM	NA	Std	oncgor_std6	803.941836752313	(+) Positive	Standard	Positive	False
+	F03	FAM	NA	Std	oncgor_std6	-1.62879659625542		Standard	NoCall	False
+	F04	FAM	NA	Unkn	580	1352.77142359921	(+) Positive	Unknown	Positive	False
+	F05	FAM	NA	Unkn	580	1548.13068919682	(+) Positive	Unknown	Positive	False
+	F06	FAM	NA	Unkn	580	1496.73786122529	(+) Positive	Unknown	Positive	False
+	F07	FAM	NA	Unkn	580	1449.24998247309	(+) Positive	Unknown	Positive	False
+	F08	FAM	NA	Unkn	580	1566.98687830417	(+) Positive	Unknown	Positive	False
+	F09	FAM	NA	Unkn	580	1720.51885812348	(+) Positive	Unknown	Positive	False
+	F10	FAM	NA	Unkn	547	-2.3806408440194		Unknown	NoCall	False
+	F11	FAM	NA	Unkn	547	-0.92935279814792		Unknown	NoCall	False
+	F12	FAM	NA	Unkn	547	-2.04607336103672		Unknown	NoCall	False
+	G01	FAM	NA	Std	oncgor_std7	-0.134921753040544		Standard	NoCall	False
+	G02	FAM	NA	Std	oncgor_std7	-1.08261174556937		Standard	NoCall	False
+	G03	FAM	NA	Std	oncgor_std7	-3.88512853477278		Standard	NoCall	False
+	G04	FAM	NA	Unkn	581	1281.52481033741	(+) Positive	Unknown	Positive	False
+	G05	FAM	NA	Unkn	581	1214.75543924479	(+) Positive	Unknown	Positive	False
+	G06	FAM	NA	Unkn	581	1456.54245925937	(+) Positive	Unknown	Positive	False
+	G07	FAM	NA	Unkn	581	1671.10752829473	(+) Positive	Unknown	Positive	False
+	G08	FAM	NA	Unkn	581	1617.42095492624	(+) Positive	Unknown	Positive	False
+	G09	FAM	NA	Unkn	581	1889.78124784482	(+) Positive	Unknown	Positive	False
+	G10	FAM	NA	Unkn	548	-2.89080061704408		Unknown	NoCall	False
+	G11	FAM	NA	Unkn	548	-0.30163906447724		Unknown	NoCall	False
+	G12	FAM	NA	Unkn	548	-0.597527782773159		Unknown	NoCall	False
+	H01	FAM	NA	Neg Ctrl	nc_mm	-1.55471552463478		ControlNegative	Negative	True
+	H02	FAM	NA	Neg Ctrl	nc_mm	-2.59974082628178		ControlNegative	Negative	True
+	H03	FAM	NA	Neg Ctrl	nc_mm	-1.13262153048909		ControlNegative	Negative	True
+	H04	FAM	NA	Unkn	582	-3.67636807633426		Unknown	NoCall	False
+	H05	FAM	NA	Unkn	582	4.16059789515166		Unknown	NoCall	False
+	H06	FAM	NA	Unkn	582	-0.677239789453961		Unknown	NoCall	False
+	H07	FAM	NA	Unkn	582	-4.04165212520456		Unknown	NoCall	False
+	H08	FAM	NA	Unkn	582	-2.65888055117212		Unknown	NoCall	False
+	H09	FAM	NA	Unkn	582	4.06927030420266		Unknown	NoCall	False
+	H10	FAM	NA	Unkn	549	-2.67246913983381		Unknown	NoCall	False
+	H11	FAM	NA	Unkn	549	-1.90571779551083		Unknown	NoCall	False
+	H12	FAM	NA	Unkn	549	-2.35175504033487		Unknown	NoCall	False
