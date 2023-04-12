@@ -1,0 +1,13 @@
+File Name	EEG_2021-11-15_Acharr_FinSval_plate1_CFX96.pcrd
+Created By User	EEG
+Notes	
+ID	
+Run Started	11/15/2021 10:59:10 UTC
+Run Ended	11/15/2021 12:04:48 UTC
+Sample Vol	25
+Lid Temp	105
+Protocol File Name	ACharr_ta635.prcl
+Plate Setup File Name	Fin_Sval_3firstrep.pltd
+Base Serial Number	CC015261
+Optical Head Serial Number	785BR5460
+CFX Maestro Version	3.1.1517.0823. 
