@@ -1,0 +1,33 @@
+		1	2	3	4	5	6	7	8	9	10	11	12
+A	Content	Std	Std	Std	Unkn	Unkn	Unkn	Unkn	Unkn	Unkn	Unkn	Unkn	Unkn
+A	Sample	oncgor_std1	oncgor_std1	oncgor_std1	567	567	567	567	567	567	574	574	574
+A	Peak 1												
+A	Peak 2												
+B	Content	Std	Std	Std	Unkn	Unkn	Unkn	Unkn	Unkn	Unkn	Unkn	Unkn	Unkn
+B	Sample	oncgor_std2	oncgor_std2	oncgor_std2	568	568	568	568	568	568	574	574	574
+B	Peak 1												
+B	Peak 2												
+C	Content	Std	Std	Std	Unkn	Unkn	Unkn	Neg Ctrl	Neg Ctrl	Neg Ctrl	Unkn	Unkn	Unkn
+C	Sample	oncgor_std3	oncgor_std3	oncgor_std3	569	569	569	nc_plt	nc_plt	nc_plt	575	575	575
+C	Peak 1												
+C	Peak 2												
+D	Content	Unkn	Unkn	Unkn	Unkn	Unkn	Unkn	Neg Ctrl	Neg Ctrl	Neg Ctrl	Unkn	Unkn	Unkn
+D	Sample	oncgor_std4	oncgor_std4	oncgor_std4	569	569	569	nc_samp_585	nc_samp_585	nc_samp_585	575	575	575
+D	Peak 1												
+D	Peak 2												
+E	Content	Unkn	Unkn	Unkn	Unkn	Unkn	Unkn	Unkn	Unkn	Unkn	Unkn	Unkn	Unkn
+E	Sample	oncgor_std5	oncgor_std5	oncgor_std5	570	570	570	570	570	570	537 (virik)	537 (virik)	537 (virik)
+E	Peak 1												
+E	Peak 2												
+F	Content	Unkn	Unkn	Unkn	Unkn	Unkn	Unkn	Unkn	Unkn	Unkn	Unkn	Unkn	Unkn
+F	Sample	oncgor_std6	oncgor_std6	oncgor_std6	571	571	571	571	571	571	537 (virik)	537 (virik)	537 (virik)
+F	Peak 1												
+F	Peak 2												
+G	Content				Unkn	Unkn	Unkn	Unkn	Unkn	Unkn	Unkn	Unkn	Unkn
+G	Sample				572	572	572	572	572	572	540 (virik)	540 (virik)	540 (virik)
+G	Peak 1												
+G	Peak 2												
+H	Content	Neg Ctrl	Neg Ctrl	Neg Ctrl	Unkn	Unkn	Unkn	Unkn	Unkn	Unkn	Unkn	Unkn	Unkn
+H	Sample	nc_mm	nc_mm	nc_mm	573	573	573	573	573	573	543 (virik)	543 (virik)	543 (virik)
+H	Peak 1												
+H	Peak 2												

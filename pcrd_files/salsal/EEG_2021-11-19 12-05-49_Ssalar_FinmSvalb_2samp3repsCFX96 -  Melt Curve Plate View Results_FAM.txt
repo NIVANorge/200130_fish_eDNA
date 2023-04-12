@@ -1,0 +1,33 @@
+		1	2	3	4	5	6	7	8	9	10	11	12
+A	Content	Std	Std	Std	Unkn	Unkn	Unkn	Unkn	Unkn	Unkn	Unkn	Unkn	Unkn
+A	Sample	salsal_std0	salsal_std0	salsal_std0	567	567	567	568	568	568	589	589	589
+A	Peak 1												
+A	Peak 2												
+B	Content	Std	Std	Std	Unkn	Unkn	Unkn	Unkn	Unkn	Unkn	Unkn	Unkn	Unkn
+B	Sample	salsal_std1	salsal_std1	salsal_std1	570	570	570	571	571	571	590	590	590
+B	Peak 1												
+B	Peak 2												
+C	Content	Std	Std	Std	Unkn	Unkn	Unkn	Unkn	Unkn	Unkn	Unkn	Unkn	Unkn
+C	Sample	salsal_std2	salsal_std2	salsal_std2	573	573	573	574	574	574	592	592	592
+C	Peak 1												
+C	Peak 2												
+D	Content	Std	Std	Std	Unkn	Unkn	Unkn	Unkn	Unkn	Unkn	Unkn	Unkn	Unkn
+D	Sample	salsal_std3	salsal_std3	salsal_std3	576	576	576	577	577	577	593	593	593
+D	Peak 1												
+D	Peak 2												
+E	Content	Std	Std	Std	Neg Ctrl	Neg Ctrl	Neg Ctrl	Neg Ctrl	Neg Ctrl	Neg Ctrl	Neg Ctrl	Neg Ctrl	Neg Ctrl
+E	Sample	salsal_std4	salsal_std4	salsal_std4	585	585	585	nc_plt	nc_plt	nc_plt	595	595	595
+E	Peak 1												
+E	Peak 2												
+F	Content	Std	Std	Std	Unkn	Unkn	Unkn	Unkn	Unkn	Unkn			
+F	Sample	salsal_std5	salsal_std5	salsal_std5	579	579	579	580	580	580			
+F	Peak 1												
+F	Peak 2												
+G	Content	Neg Ctrl	Neg Ctrl	Neg Ctrl	Unkn	Unkn	Unkn	Unkn	Unkn	Unkn			
+G	Sample	nc_ext	nc_ext	nc_ext	582	582	582	583	583	583			
+G	Peak 1												
+G	Peak 2												
+H	Content	Neg Ctrl	Neg Ctrl	Neg Ctrl	Unkn	Unkn	Unkn	Unkn	Unkn	Unkn			
+H	Sample	nc_mm	nc_mm	nc_mm	586	586	586	587	587	587			
+H	Peak 1												
+H	Peak 2												

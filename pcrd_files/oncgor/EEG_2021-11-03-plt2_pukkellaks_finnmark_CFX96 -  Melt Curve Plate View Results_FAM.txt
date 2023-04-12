@@ -1,0 +1,33 @@
+		1	2	3	4	5	6	7	8	9	10	11	12
+A	Content	Std	Std	Std	Unkn	Unkn	Unkn	Unkn	Unkn	Unkn	Unkn	Unkn	Unkn
+A	Sample	oncgor_std1	oncgor_std1	oncgor_std1	576	576	576	576	576	576	583	583	583
+A	Peak 1												
+A	Peak 2												
+B	Content	Std	Std	Std	Unkn	Unkn	Unkn	Unkn	Unkn	Unkn	Unkn	Unkn	Unkn
+B	Sample	oncgor_std2	oncgor_std2	oncgor_std2	577	577	577	577	577	577	583	583	583
+B	Peak 1												
+B	Peak 2												
+C	Content	Std	Std	Std	Unkn	Unkn	Unkn	Neg Ctrl	Neg Ctrl	Neg Ctrl	Unkn	Unkn	Unkn
+C	Sample	oncgor_std3	oncgor_std3	oncgor_std3	578	578	578	nc_plt	nc_plt	nc_plt	584	584	584
+C	Peak 1												
+C	Peak 2												
+D	Content	Std	Std	Std	Unkn	Unkn	Unkn	Neg Ctrl	Neg Ctrl	Neg Ctrl	Unkn	Unkn	Unkn
+D	Sample	oncgor_std4	oncgor_std4	oncgor_std4	578	578	578	nc_ext	nc_ext	nc_ext	584	584	584
+D	Peak 1												
+D	Peak 2												
+E	Content	Std	Std	Std	Unkn	Unkn	Unkn	Unkn	Unkn	Unkn	Unkn	Unkn	Unkn
+E	Sample	oncgor_std5	oncgor_std5	oncgor_std5	579	579	579	579	579	579	546	546	546
+E	Peak 1												
+E	Peak 2												
+F	Content	Std		Std	Unkn	Unkn	Unkn	Unkn	Unkn	Unkn	Unkn	Unkn	Unkn
+F	Sample	oncgor_std6		oncgor_std6	580	580	580	580	580	580	547	547	547
+F	Peak 1												
+F	Peak 2												
+G	Content	Std	Std	Std	Unkn	Unkn	Unkn	Unkn	Unkn	Unkn	Unkn	Unkn	Unkn
+G	Sample	oncgor_std7	oncgor_std7	oncgor_std7	581	581	581	581	581	581	548	548	548
+G	Peak 1												
+G	Peak 2												
+H	Content	Neg Ctrl	Neg Ctrl	Neg Ctrl	Unkn	Unkn	Unkn	Unkn	Unkn	Unkn	Unkn	Unkn	Unkn
+H	Sample	nc_mm	nc_mm	nc_mm	582	582	582	582	582	582	549	549	549
+H	Peak 1												
+H	Peak 2												

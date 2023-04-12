@@ -1,0 +1,13 @@
+File Name	EEG_2021-11-02-plt1_pukkellaks_finnmark_CFX96.pcrd
+Created By User	SAO
+Notes	
+ID	
+Run Started	11/02/2021 14:21:03 UTC
+Run Ended	11/02/2021 15:27:40 UTC
+Sample Vol	25
+Lid Temp	105
+Protocol File Name	L18E83_strutta_virik.prcl
+Plate Setup File Name	LJ-E83-strutta.pltd
+Base Serial Number	CC015261
+Optical Head Serial Number	785BR5460
+CFX Maestro Version	3.1.1517.0823. 
