@@ -3,14 +3,17 @@ require(here)
 require(ggpubr)
 require(ragg)
 #5603
-obs <- tibble(species = c("oncgor", "salsal", "saltru", "salalp"), nfish = c(3987, 18, 3, 1), 
+obs0 <- tibble(species = c("oncgor", "salsal", "saltru", "salalp"), nfish = c(3987, 18, 3, 1), 
               bfish  = c(3987*1.5, 18*3, 3*1.5, 1*2.5), totfish = sum(3987, 18, 3, 0)) 
 obs
+
+obs <- tibble(species = c("oncgor", "salsal", "saltru", "salalp"), nfish = c(5603, 18, 3, 1), 
+              bfish  = c(5603*1.5, 18*3, 3*1.5, 1*2.5), totfish = sum(5603, 18, 3, 0)) 
 
 samples_meta <- readxl::read_xlsx(here("data", "eDNAsamples_GJE_2021_Rform.xlsx")) %>%
   dplyr::select(filter, sampl_replicate)
 
-edna_10km <- readxl::read_xlsx(here("data", "eDNAconc_salmonids_GrenseJRiver_finalw_PinkSalcounts.xlsx")) %>% 
+edna_10km <- readxl::read_xlsx(here("data", "eDNAconc_salmonids_GrenseJRiver_finalw_oncgorcounts.xlsx")) %>% 
   dplyr::filter(dist_ocean == 10)
 
 
@@ -108,7 +111,7 @@ DNA_numberplot <- ggplot(edna_obs_ratios, aes(x = species, y = log_ng_count, gro
   ylab(expression(paste(log[10],over(paste("ng eDNA m", L^-1),"fish count"))))+
   ylim(c(-6,-4.6))+
   theme(axis.title.x = element_blank())+
-  geom_text(data = ratio_count_labels, aes(x = species, y = maxratiocount+0.05, label = groups))
+  geom_text(data = ratio_count_labels, aes(x = species, y = maxratiocount+0.2, label = groups))
 
 DNA_numberplot
 
@@ -122,14 +125,14 @@ DNA_biomassplot <- ggplot(edna_obs_ratios, aes(x = species, y = log_ng_biomass, 
   ylab(expression(paste(log[10],over(paste("ng eDNA m", L^-1),"estimated biomass"))))+
   ylim(c(-6.5,-4.6))+
   theme(axis.title.x = element_blank())+
-  geom_text(data = ratio_biom_labels, aes(x = species, y = maxratiobiomass+0.05, label = groups))
+  geom_text(data = ratio_biom_labels, aes(x = species, y = maxratiobiomass+0.2, label = groups))
 
 
 DNA_biomassplot
 
 dna_fish <- ggarrange(DNA_numberplot, DNA_biomassplot, nrow = 2, common.legend = T, legend = "right", labels = "AUTO")
 
-ragg::agg_png("ratio_dna_fish.png", width = 6, height = 5, units = "in", res = 300, scaling = 1)
+ragg::agg_png("figures/ratio_dna_fish2.png", width = 6, height = 5, units = "in", res = 300, scaling = 1)
 dna_fish
 dev.off()
 
@@ -152,7 +155,7 @@ with(edna_obs_ratios, t.test(log_ng_biomass[species == "saltru"], log_ng_biomass
 fishcols <- ggplot_build(allfish_bp)$data[[1]] %>% select(fill) %>% unique()
 
 
-edna_obs_ratios01 <- edna_obs_ratios0 %>% group_by(Sample, species, nfish, bfish) %>% summarise(medianconc = median(target_dna_conc_ngmL, na.rm = T))
+edna_obs_ratios01 <- edna_obs_ratios0 %>% group_by(filter, species, nfish, bfish) %>% summarise(medianconc = median(spec_edna_ngml, na.rm = T))
 
 loglog_nfish <- ggplot(edna_obs_ratios01, aes(x = nfish, y = (medianconc), group = species, fill = species))+
   geom_point()+
@@ -179,15 +182,15 @@ loglog_fish <- ggarrange(loglog_nfish, loglog_biomass, nrow = 2, common.legend =
 
 loglog_fish
 
-ragg::agg_png("loglog_fish.png", width = 6, height = 5, units = "in", res = 300, scaling = 1)
+ragg::agg_png("figures/loglog_fish.png", width = 6, height = 5, units = "in", res = 300, scaling = 1)
 loglog_fish
 dev.off()
   
-with(edna_obs_ratios0, cor.test(log(target_dna_conc_ngmL), log(nfish), method = "kendall"))
-with(edna_obs_ratios0, cor.test(log(target_dna_conc_ngmL), log(bfish), method = "kendall"))
+with(edna_obs_ratios0, cor.test(log(spec_edna_ngml), log(nfish), method = "kendall"))
+with(edna_obs_ratios0, cor.test(log(spec_edna_ngml), log(bfish), method = "kendall"))
 
-with(edna_obs_ratios0, summary(lm(log(target_dna_conc_ngmL) ~ log(nfish))))
-with(edna_obs_ratios0, summary(lm(log(target_dna_conc_ngmL) ~ log(bfish))))
+with(edna_obs_ratios0, summary(lm(log(spec_edna_ngml) ~ log(nfish))))
+with(edna_obs_ratios0, summary(lm(log(spec_edna_ngml) ~ log(bfish))))
 
 with(edna_obs_ratios01, cor.test(log(medianconc), log(nfish), method = "kendall"))
 with(edna_obs_ratios01, cor.test(log(medianconc), log(bfish), method = "kendall"))
@@ -201,6 +204,8 @@ with(edna_obs_ratios01, summary(lm(log(medianconc) ~ log(bfish))))
 12.65 * 3600
 
 10^-6.2 * 1000 * 4000  * 3600 #12.65 ng/kg/s # Transform to pg/g/h
+
+(10^-1.6 * 10^3 * 4000) #ng/mL * 1000mL/L * 4000L/s = 100475 ng/s
 
 
 
@@ -230,4 +235,4 @@ pinksal_groups <- psalhsd$groups %>%
   arrange(dist_hav)
 
 
-pinksal.summarised <- ps_finn_forplot2 %>% group_by(dist_hav, stasjon) %>% summarize(max.edna = max(log10(SQ_vol), na.rm = T))
+pinksal.summarised <- oncgor_med %>% group_by(dist_ocean, station) %>% summarize(max.edna = max(log10(spec_edna_ngml), na.rm = T))
