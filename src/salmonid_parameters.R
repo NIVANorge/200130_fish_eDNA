@@ -5,12 +5,6 @@ require(ragg)
 require(readxl)
 library(patchwork)
 
-# This script is for visualising the ranges of decay and shedding rates included in the models
-# Empirically estimated shedding rates were calculated in "anadromous_grense_jakobs_river.Rmd. 
-
-# Read the median for each sample replicate for each species, for plotting: 
-shed_rates_median <- read_xlsx(here("data", "shed_rates_median.xlsx"))
-
 list.dirs(here("Data_for_figures"))
 param_linear <- read.csv(here("Data_for_figures/Linear_dist_best", "Param_data_Linear.csv"))
 param_linear
@@ -148,6 +142,10 @@ shed_plot <- ggplot(shed_best, aes(x = species, ymin = param_min, ymax = param_m
   scale_x_discrete(labels = c("Pink salmon", "Atlantic salmon", "Trout", "Arctic char"))+
   ylab(expression(paste("eDNA shedding rate (ng ", kg^-1, min^-1,")")))+
   xlab("")+
+  geom_text(aes(y = param_best, label = round(param_best, 1)), vjust = -1)+
+  geom_text(aes(y = obs, label = round(obs, 1)), vjust = -1)+
+  #geom_crossbar(aes(y = obs), color = "blue")+
+  #geom_jitter(data = shed_rates, aes(x = species, y = shed))+
   geom_segment(aes(x = 0.55, xend = 1.45, y = obs[1], yend = obs[1]), size = 2, col = "green")+
 geom_segment(aes(x = 1.55, xend = 2.45, y = obs[2], yend = obs[2]), size = 2, col = "green")+
   geom_segment(aes(x = 2.55, xend = 3.45, y = obs[3], yend = obs[3]), size = 2, col = "green")+
@@ -155,13 +153,7 @@ geom_segment(aes(x = 1.55, xend = 2.45, y = obs[2], yend = obs[2]), size = 2, co
   geom_segment(aes(x = 0.55, xend = 1.45, y = param_best[1], yend = param_best[1]), size = 2, col = "blue")+
   geom_segment(aes(x = 1.55, xend = 2.45, y = param_best[2], yend = param_best[2]), size = 2, col = "blue")+
   geom_segment(aes(x = 2.55, xend = 3.45, y = param_best[3], yend = param_best[3]), size = 2, col = "blue")+
-  geom_segment(aes(x = 3.55, xend = 4.45, y = param_best[4], yend = param_best[4]), size = 2, col = "blue")+
-  theme(legend.position = "none")+
-  geom_jitter(data = shed_rates_median, aes(x = species, y = median_shed, color = sampl_replicate), inherit.aes = F, width = 0.1)+
-  scale_color_manual(values = c("red", "blue", "cyan"))+
-  geom_text(aes(y = param_best, label = round(param_best, 1)), vjust = -1, size = 3.5)+
-  geom_text(aes(y = obs, label = round(obs, 1)), vjust = -1, size = 3.5)
-  
+  geom_segment(aes(x = 3.55, xend = 4.45, y = param_best[4], yend = param_best[4]), size = 2, col = "blue")
 shed_plot
 
 decay_best <- as_tibble(param_best) %>% dplyr::filter(rate == "decay")
@@ -185,6 +177,6 @@ param_plot <- (shed_plot /decay_plot) + plot_annotation(tag_levels = "A")
 param_plot
 
 
-ragg::agg_png("figures/param_bestmod_plot_wrange.png", width = 10, height = 12, units = "in", res = 600, scaling = 2)
+ragg::agg_png("figures/param_bestmod_plot.png", width = 10, height = 12, units = "in", res = 600, scaling = 2)
 param_plot
 dev.off()
