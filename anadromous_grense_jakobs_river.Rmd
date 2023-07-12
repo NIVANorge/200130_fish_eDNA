@@ -35,8 +35,11 @@ library(plotly)
 library(purrr)
 library(grid)
 library(patchwork)
+<<<<<<< HEAD
 library(plotly)
 library(formattable)
+=======
+>>>>>>> 7223e132aa3d391884ae14d7dcfe7595d831bb4b
 Sys.setlocale(locale='no_NB.utf8')
 Sys.getlocale()
 #remotes::install_github("r-spatial/mapview")
@@ -55,7 +58,11 @@ samples_meta <- readxl::read_xlsx(here("data", "eDNAsamples_GJE_2021_Rform.xlsx"
 # Read quantification data from QA pcrd-files
 ```{r}
 speciespath <- paste0("pcrd_files/", c("oncgor", "salsal", "saltru", "salalp"))
+<<<<<<< HEAD
 specieslist <- c("oncgor", "salsal", "saltru", "salalp") #oncgor = Pink salmon, salsal = Atlantic salmon, saltru = trout, salalp = Arctic char
+=======
+specieslist <- c("oncgor", "salsal", "saltru", "salalp")
+>>>>>>> 7223e132aa3d391884ae14d7dcfe7595d831bb4b
 
 list.files(path = here(speciespath[1]), pattern = "Quantification Summary.txt")
 
@@ -96,7 +103,9 @@ all_species_meta <- left_join(all_species, samples_meta, by = c("Sample" = "filt
 
 dim(all_species_meta)
 
-# for each sampling replicates (filter), select the 3 technical qPCR replicates which are closest to the median 
+<<<<<<< HEAD
+# for each sampling replicate (filter), select the 3 technical qPCR replicates which are closest to the median 
+>>>>>>> 7223e132aa3d391884ae14d7dcfe7595d831bb4b
 all_species_meta_median <- all_species_meta %>% 
   group_by(species, station, sampl_replicate, lat, lon) %>% 
   mutate(median_sq = median(spec_edna_ngml)) %>%  
@@ -114,6 +123,7 @@ writexl::write_xlsx(all_species_meta_median_formodel, here("data", "eDNAconc_sal
 
 
 ```
+<<<<<<< HEAD
 # Read file with modeled eDNA concentrations
 ```{r}
 model_edna <- readxl::read_xlsx(here("data", "modeled_edna_bestmod.xlsx"))
@@ -131,6 +141,20 @@ facetplot <- ggplot(all_species_meta_median_formodel, aes(x = dist_ocean, y = lo
   facet_grid(rows = vars(species))+
   geom_boxplot(outlier.alpha = 0)+
   geom_jitter(width = 0.5, aes(color = sampl_replicate))+
+=======
+# Make boxplot function
+```{r}
+bp_fish_fun <- function(dat, var, )
+```
+
+
+```{r}
+facetplot <- ggplot(all_species_meta_median_formodel, aes(x = dist_ocean, y = log10(spec_edna_ngml), text = filename, group = station))+
+  facet_grid(rows = vars(species))+
+  geom_boxplot(outlier.alpha = 0)+
+  geom_jitter(width = 0.5, aes(color = sampl_replicate))#+
+  #geom_text(data = oncgor.summarised, aes(x = dist_ocean, y = 0.2+max.edna, label = oncgor_groups$groups))+
+>>>>>>> 7223e132aa3d391884ae14d7dcfe7595d831bb4b
   xlab("Distance from ocean (km)")+
   ylab("Log10 eDNA conc. (ng/mL)")+
   labs(color = "Sampling\nreplicate")+
@@ -138,13 +162,24 @@ facetplot <- ggplot(all_species_meta_median_formodel, aes(x = dist_ocean, y = lo
   theme_bw()+
   theme(axis.title = element_text(size = 10),
         legend.title = element_text(size = 10),
+<<<<<<< HEAD
         plot.title = element_text(hjust = 0.5, size = 12))
+=======
+        plot.title = element_text(hjust = 0.5, size = 12))+
+  #geom_smooth(aes(group = 1), se = TRUE, method = "gam",formula = y ~ poly(x, 4))+
+  annotate("text", x = Inf, y = Inf, label = "Pink Salmon", hjust = 1.1, vjust = 1.3)
+>>>>>>> 7223e132aa3d391884ae14d7dcfe7595d831bb4b
   
   ggplotly(facetplot)
 ```
 
+<<<<<<< HEAD
 # Separate plots for each species, with test of differences between stations
 ### Pink salmon
+=======
+
+# Pink salmon
+>>>>>>> 7223e132aa3d391884ae14d7dcfe7595d831bb4b
 ```{r}
 oncgor_med <- all_species_meta_median_formodel %>% dplyr::filter(species == "oncgor")
 
@@ -189,11 +224,19 @@ oncgor_bp
 
 ```
 
+<<<<<<< HEAD
 ### Atlantic salmon
 ```{r}
 salsal_med <- all_species_meta_median_formodel %>% dplyr::filter(species == "salsal")
 
 # Tukey multiple comparison test, Atlantic salmon
+=======
+# Atlantic salmon
+```{r}
+salsal_med <- all_species_meta_median_formodel %>% dplyr::filter(species == "salsal")
+
+# Tukey multiple comparison test, pink salmon
+>>>>>>> 7223e132aa3d391884ae14d7dcfe7595d831bb4b
 salsal_aov <- aov(log10(spec_edna_ngml) ~ dist_ocean, data = salsal_med)
 summary(salsal_aov)
 
@@ -222,18 +265,34 @@ salsal_bp <- ggplot(salsal_med, aes(x = dist_ocean, y = spec_edna_ngml, group = 
   theme(axis.title = element_text(size = 10),
         legend.title = element_text(size = 10),
         plot.title = element_text(hjust = 0.5, size = 12))+
+<<<<<<< HEAD
   annotate("text", x = Inf, y = Inf, label = "Atlantic Salmon", hjust = 1.1, vjust = 1.3)+
 scale_x_continuous(breaks = unique(oncgor_med$dist_ocean))
 
 salsal_bp
 
+=======
+  #geom_smooth(aes(group = 1), se = TRUE)+
+  annotate("text", x = Inf, y = Inf, label = "Atlantic Salmon", hjust = 1.1, vjust = 1.3)+
+ # theme(legend.position = "none")
+# geom_smooth(aes(group = 1), se = TRUE, method = "gam",formula = y ~ s(x, k = 6))+
+scale_x_continuous(breaks = unique(oncgor_med$dist_ocean))
+
+
+salsal_bp
+
+>>>>>>> 7223e132aa3d391884ae14d7dcfe7595d831bb4b
 ```
 
 ### Trout
 ```{r}
 saltru_med <- all_species_meta_median_formodel %>% dplyr::filter(species == "saltru")
 
+<<<<<<< HEAD
 # Tukey multiple comparison test, trout
+=======
+# Tukey multiple comparison test, pink salmon
+>>>>>>> 7223e132aa3d391884ae14d7dcfe7595d831bb4b
 saltru_aov <- aov(log10(spec_edna_ngml) ~ dist_ocean, data = saltru_med)
 summary(saltru_aov)
 
@@ -263,8 +322,16 @@ saltru_bp <- ggplot(saltru_med, aes(x = dist_ocean, y = spec_edna_ngml, group = 
   theme(axis.title = element_text(size = 10),
         legend.title = element_text(size = 10),
         plot.title = element_text(hjust = 0.5, size = 12))+
+<<<<<<< HEAD
   annotate("text", x = Inf, y = Inf, label = "Trout", hjust = 1.1, vjust = 1.3)+
   scale_x_continuous(breaks = unique(oncgor_med$dist_ocean))
+=======
+  #geom_smooth(aes(group = 1), se = TRUE)+
+  annotate("text", x = Inf, y = Inf, label = "Trout", hjust = 1.1, vjust = 1.3)+
+  scale_x_continuous(breaks = unique(oncgor_med$dist_ocean))
+ # theme(legend.position = "none")
+# geom_smooth(aes(group = 1), se = TRUE, method = "gam",formula = y ~ s(x, k = 6))+
+>>>>>>> 7223e132aa3d391884ae14d7dcfe7595d831bb4b
 
 saltru_bp
 
@@ -272,6 +339,7 @@ saltru_bp
 
 ### Arctic char
 ```{r}
+<<<<<<< HEAD
 salalp_med <- all_species_meta_median_formodel %>% dplyr::filter(species == "salalp")
 
 # Tukey multiple comparison test, Arctic char
@@ -281,6 +349,18 @@ summary(salalp_aov)
 salalp_hsd <- agricolae::HSD.test(salalp_aov, "dist_ocean", group = T)
 salalp_hsd
 
+=======
+
+salalp_med <- all_species_meta_median_formodel %>% dplyr::filter(species == "salalp")
+
+# Tukey multiple comparison test, pink salmon
+salalp_aov <- aov(log10(spec_edna_ngml) ~ dist_ocean, data = salalp_med)
+summary(salalp_aov)
+
+salalp_hsd <- agricolae::HSD.test(salalp_aov, "dist_ocean", group = T)
+salalp_hsd
+
+>>>>>>> 7223e132aa3d391884ae14d7dcfe7595d831bb4b
 salalp_groups <- salalp_hsd$groups %>% 
   rownames_to_column(., var = "dist_ocean_fact") %>% tibble() %>% 
   mutate(dist_ocean = as.double(dist_ocean_fact)) %>% 
@@ -304,8 +384,17 @@ salalp_bp <- ggplot(salalp_med, aes(x = dist_ocean, y = spec_edna_ngml, group = 
   theme(axis.title = element_text(size = 10),
         legend.title = element_text(size = 10),
         plot.title = element_text(hjust = 0.5, size = 12))+
+<<<<<<< HEAD
   annotate("text", x = Inf, y = Inf, label = "Arctic Char", hjust = 1.1, vjust = 1.3)+
   scale_x_continuous(breaks = unique(oncgor_med$dist_ocean))
+=======
+  #geom_smooth(aes(group = 1), se = TRUE)+
+  annotate("text", x = Inf, y = Inf, label = "Arctic Char", hjust = 1.1, vjust = 1.3)+
+  scale_x_continuous(breaks = unique(oncgor_med$dist_ocean))
+ # theme(legend.position = "none")
+# geom_smooth(aes(group = 1), se = TRUE, method = "gam",formula = y ~ s(x, k = 6))+
+
+>>>>>>> 7223e132aa3d391884ae14d7dcfe7595d831bb4b
 
 salalp_bp
 
@@ -315,6 +404,7 @@ salalp_bp
 
 # Arrange plots
 ```{r}
+<<<<<<< HEAD
  # Make y-axis label to include with the plots with patchwork
 
  ednalab <- ggplot(data.frame(l = 'Species eDNA concentration in river water (ng/mL)', x = 1, y = 1)) +
@@ -340,6 +430,64 @@ bestmodpatchedna2 <- bestmodpatchedna + plot_annotation(tag_levels = list(c("A",
 
 
 #Boxplot, species next to each other
+=======
+ 
+ plotlist_bp <- list(oncgor_bp +theme(axis.title.x = element_blank()),
+                 salsal_bp+theme(axis.title.x = element_blank(), legend.position = "none"), 
+                 saltru_bp +theme(axis.title.x = element_blank(), legend.position = "none"),
+                 salalp_bp+theme(legend.position = "none"))
+ 
+ andro_arr_bp <- ggarrange(plotlist = plotlist_bp, nrow = length(plotlist_bp), labels = LETTERS[1:4], legend = "right", align = "hv", common.legend = T)
+andro_arr_bp
+
+oncgor_bp+theme(axis.title.x = element_blank())+salsal_bp + plot_layout(nrow = 2)
+ 
+ragg::agg_png("figures/anadromous_boxplot_arr_nosmooth.png", width = 10, height = 12, units = "in", res = 300, scaling = 1.2)
+ andro_arr_bp
+ dev.off()
+ 
+ 
+ patchfisn <- (oncgor_bp+theme(axis.title.y = element_blank(),
+                               axis.title.x.bottom = element_blank()) + 
+   salsal_bp + theme(axis.title = element_blank()) +
+   saltru_bp + theme(axis.title = element_blank()) +
+   salalp_bp + theme(axis.title.y = element_blank())) +
+   plot_layout(nrow = 4, guides = "collect")
+ 
+ 
+
+ 
+ 
+ pylab <- ggplot(data.frame(l = 'Species eDNA concentration in river water (ng/mL)', x = 1, y = 1)) +
+      geom_text(aes(x, y, label = l), angle = 90) + 
+      theme_void() +
+      coord_cartesian(clip = "off")
+
+ pylab+patchfisn + plot_layout(widths = c(1, 25))
+ 
+ 
+ 
+ bestmodpatchedna <- (pylab | ((oncgor_bp+theme(axis.title.y = element_blank(),
+                                                       axis.title.x.bottom = element_blank())) /
+                                   (salsal_bp + theme(axis.title = element_blank()))/
+                                   (saltru_bp + theme(axis.title = element_blank()))/
+                                    (salalp_bp + theme(axis.title.y = element_blank())))) + 
+  plot_layout(widths = c(1.5, 25), guides = "collect")
+
+bestmodpatchedna[[2]] <- bestmodpatchedna[[2]] + plot_layout(tag_level = "new")
+
+bestmodpatchedna2 <- bestmodpatchedna + plot_annotation(tag_levels = list(c("A", ""), "I"))
+
+ 
+ ragg::agg_png("figures/anadromous_boxplot_arr6_hydromod.png", width = 10, height = 12, units = "in", res = 300, scaling = 1.4)
+ pylab+patchfisn + plot_layout(widths = c(1, 25))
+ dev.off()
+
+```
+>>>>>>> 7223e132aa3d391884ae14d7dcfe7595d831bb4b
+
+
+#Boxplot, all species
 
 ```{r}
 allfish_bp <- ggplot(all_species_meta_median_formodel, aes(x = dist_ocean, y = log10(spec_edna_ngml)))+
@@ -385,7 +533,11 @@ ragg::agg_png("figures/allfish_boxplot.png", width = 10, height = 5, units = "in
 
 # Range of eDNA concentrations for each species, and which station had min and max
 ```{r}
+<<<<<<< HEAD
 range_edna <- all_species_meta_median_formodel %>% group_by(species, station, dist_ocean) %>% 
+=======
+range <- all_species_meta_median_formodel %>% group_by(species, station, dist_ocean) %>% 
+>>>>>>> 7223e132aa3d391884ae14d7dcfe7595d831bb4b
   summarise_if(is.numeric, ~median(., na.rm =T)) %>% 
  # ungroup() %>% 
   group_by(species) %>% filter(spec_edna_ngml %in% range(spec_edna_ngml, na.rm = T)) %>%
@@ -393,21 +545,37 @@ range_edna <- all_species_meta_median_formodel %>% group_by(species, station, di
   arrange(species,spec_edna_ngml) %>% 
   ungroup() %>% 
   mutate(minmax = rep(c("min", "max"), 4)) %>% 
+<<<<<<< HEAD
   mutate(eDNAconc = scientific(spec_edna_ngml)) 
+=======
+  mutate(eDNAconc = scientific(spec_edna_ngml, 2)) 
+
+range_statsj <- range %>% 
+  pivot_wider(., id_cols = c(species, station), names_from = minmax, values_from = eDNAconc)
+
+range_statsj
+>>>>>>> 7223e132aa3d391884ae14d7dcfe7595d831bb4b
 
 range_stations <- range_edna %>% 
   pivot_wider(., id_cols = c(species, station), names_from = minmax, values_from = eDNAconc)
 
 writexl::write_xlsx(range_statsj, here("range_ednaconc_stations.xlsx"))
 
+<<<<<<< HEAD
 # Fold-change difference along the river for each species
 range_spec <- range_edna %>% 
+=======
+range_spec <- range %>% 
+>>>>>>> 7223e132aa3d391884ae14d7dcfe7595d831bb4b
   pivot_wider(., id_cols = c(species), names_from = minmax, values_from = spec_edna_ngml) %>% 
   mutate(magnitudechange = log10(max/min))
 
 range_spec
 
+<<<<<<< HEAD
 # How much change from one station to the next (upstream)?
+=======
+>>>>>>> 7223e132aa3d391884ae14d7dcfe7595d831bb4b
 between_stat <- all_species_meta_median_formodel %>% group_by(species, station, dist_ocean) %>% 
   summarise_if(is.numeric, ~median(., na.rm =T))
 
@@ -463,12 +631,31 @@ ragg::agg_png("figures/compare_stations2.png", width = 10, height = 5, units = "
 ```
 
 
+<<<<<<< HEAD
 # Shedding rates in ng/kg/min
 Calculated as ((ng/mL)x1000mL/L x 1460L/s x 60s/min)/(number of fish * avg. weight in kg)  
 ```{r}
 #Average weight of each species - c.f., Table 1 in the manuscript, data obtained from Statistics Norway (https://www.ssb.no/statbank/table/08991)
 
 
+=======
+#### Shedding rates in ng/kg/min
+Calculated as ((ng/mL)x1000mL/L x 1460L/s x 60s/min)/(number of fish * avg. weight in kg)  
+```{r}
+
+
+all_species_meta_median_formodel %>% group_by(species, station) %>% summarise_if(is.numeric, mean) %>% dplyr::filter(station == "1")
+
+oncgor_shed = ((0.0236 * 1000)*1460*60)/(2800*1.7)
+oncgor_shed
+
+salsal_shed = ((3.333e-5 * 1000)*1460*60)/(9 * 2.3)
+salsal_shed
+
+saltru_shed = ((2.147e-5 * 1000)*1460*60)/(3 * 1.0)
+saltru_shed
+
+>>>>>>> 7223e132aa3d391884ae14d7dcfe7595d831bb4b
 shed_rates <- all_species_meta_median_formodel %>% 
   dplyr::filter(station == "1") %>% 
   mutate(shed = case_when(species == "oncgor" ~ ((spec_edna_ngml * 1000)*1460*60)/(2800*1.7),
@@ -476,6 +663,7 @@ shed_rates <- all_species_meta_median_formodel %>%
                           species == "saltru" ~ ((spec_edna_ngml * 1000)*1460*60)/(3*1.0),
                           species == "salalp" ~ ((spec_edna_ngml * 1000)*1460*60)/(1*0.5)))
 
+<<<<<<< HEAD
 shed_rates_median <- shed_rates %>% 
   group_by(species, sampl_replicate) %>%
   summarise(median_shed = median(shed))
@@ -488,5 +676,14 @@ writexl::write_xlsx(shed_rates_median, here("data", "shed_rates_median.xlsx"))
 #Sassoubre et al. 2016 shedding rate for Pacific sardine in pg/h/g transformed to ng/kg/min: (pg/h/g) -> pg/60min/h * 1000g/kg 
 (3368e-12/60)*1000 # = 5.61e-8g = 56.1 ng
 
+=======
+
+
+salalp_shed = ((5.23e-7 * 1000)*1460*60)/(1 * 0.5)
+salalp_shed
+
+#Sassoubre et al. shedding rate: (pg/h/g) -> pg/60min/h * 1000g/kg 
+(3368e-12/60)*1000 # = 5.61e-8g = 56.1 ng
+>>>>>>> 7223e132aa3d391884ae14d7dcfe7595d831bb4b
 ```
 
