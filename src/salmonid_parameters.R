@@ -5,6 +5,19 @@ require(ragg)
 require(readxl)
 library(patchwork)
 
+specieslist <- c("oncgor", "salsal", "saltru", "salalp")
+
+#### Empirically estimated shedding rates ####
+
+shed_rates_median <- read_xlsx(here("data", "shed_rates_median.xlsx"))
+shed_rates_median
+
+shed_rates_median %>% group_by(species) %>% summarise(median = median(median_shed))
+
+shed_overallmedian <- read_xlsx(here("data", "shed_overallmedian.xlsx"))
+
+#### Shedding rates corresponding to best fit models ####
+
 list.dirs(here("Data_for_figures"))
 param_linear <- read.csv(here("Data_for_figures/Linear_dist_best", "Param_data_Linear.csv"))
 param_linear
@@ -131,21 +144,19 @@ ggplot(param_best, aes(x = species, ymin = param_min, ymax = param_max, lower = 
 
 
 shed_best <- as_tibble(param_best) %>% dplyr::filter(rate == "shed") %>% 
-  mutate(species = factor(species, ordered = T, levels = c("oncgor", "salsal", "saltru", "salalp")))
-shed_best$obs <- c(oncgor_shed, salsal_shed, saltru_shed, salalp_shed)
-
-shed_best
+  left_join(., shed_overallmedian, by = "species") %>% 
+  mutate(species = factor(species, ordered = T, levels = c("oncgor", "salsal", "saltru", "salalp"))) %>% 
+  rename(obs = overallmedian)
 
 shed_plot <- ggplot(shed_best, aes(x = species, ymin = param_min, ymax = param_max, lower = param_min, upper = param_max, middle = param_best))+
   geom_boxplot(stat = "identity")+
   theme_bw()+
-  scale_x_discrete(labels = c("Pink salmon", "Atlantic salmon", "Trout", "Arctic char"))+
+  scale_x_discrete(labels = c("Pink salmon", "Atlantic salmon", "Brown trout", "Arctic char"))+
   ylab(expression(paste("eDNA shedding rate (ng ", kg^-1, min^-1,")")))+
   xlab("")+
   geom_text(aes(y = param_best, label = round(param_best, 1)), vjust = -1)+
   geom_text(aes(y = obs, label = round(obs, 1)), vjust = -1)+
   #geom_crossbar(aes(y = obs), color = "blue")+
-  #geom_jitter(data = shed_rates, aes(x = species, y = shed))+
   geom_segment(aes(x = 0.55, xend = 1.45, y = obs[1], yend = obs[1]), size = 2, col = "green")+
 geom_segment(aes(x = 1.55, xend = 2.45, y = obs[2], yend = obs[2]), size = 2, col = "green")+
   geom_segment(aes(x = 2.55, xend = 3.45, y = obs[3], yend = obs[3]), size = 2, col = "green")+
@@ -153,7 +164,12 @@ geom_segment(aes(x = 1.55, xend = 2.45, y = obs[2], yend = obs[2]), size = 2, co
   geom_segment(aes(x = 0.55, xend = 1.45, y = param_best[1], yend = param_best[1]), size = 2, col = "blue")+
   geom_segment(aes(x = 1.55, xend = 2.45, y = param_best[2], yend = param_best[2]), size = 2, col = "blue")+
   geom_segment(aes(x = 2.55, xend = 3.45, y = param_best[3], yend = param_best[3]), size = 2, col = "blue")+
-  geom_segment(aes(x = 3.55, xend = 4.45, y = param_best[4], yend = param_best[4]), size = 2, col = "blue")
+  geom_segment(aes(x = 3.55, xend = 4.45, y = param_best[4], yend = param_best[4]), size = 2, col = "blue")+
+  geom_jitter(data = shed_rates_median, aes(x = species, y = median_shed, color = sampl_replicate), inherit.aes = F)+
+  scale_color_manual(values = c("red", "blue", "cyan"))+
+  geom_text(aes(y = param_best, label = round(param_best, 1)), vjust = -1)+
+  geom_text(aes(y = obs, label = round(obs, 1)), vjust = -1)+
+  guides(color = guide_legend(title = "Sampling\nreplicate"))
 shed_plot
 
 decay_best <- as_tibble(param_best) %>% dplyr::filter(rate == "decay")
@@ -162,7 +178,7 @@ decay_plot <- ggplot(decay_best, aes(x = species, ymin = param_min, ymax = param
   geom_boxplot(stat = "identity")+
   theme_bw()+
   geom_text(aes(y = param_best, label = round(param_best,4)), vjust = -1)+
-  scale_x_discrete(labels = c("Pink salmon", "Atlantic salmon", "Trout", "Arctic char"))+
+  scale_x_discrete(labels = c("Pink salmon", "Atlantic salmon", "Brown trout", "Arctic char"))+
   ylab(expression(paste("eDNA removal rate (", min.^-1, ")")))+
   xlab("")+
   geom_segment(aes(x = 0.55, xend = 1.45, y = param_best[1], yend = param_best[1]), size = 2, col = "blue")+
@@ -177,6 +193,6 @@ param_plot <- (shed_plot /decay_plot) + plot_annotation(tag_levels = "A")
 param_plot
 
 
-ragg::agg_png("figures/param_bestmod_plot.png", width = 10, height = 12, units = "in", res = 600, scaling = 2)
+ragg::agg_png("figures/param_bestmod_plot2.png", width = 12, height = 12, units = "in", res = 600, scaling = 2)
 param_plot
 dev.off()
